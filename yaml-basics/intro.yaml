@@ -1,0 +1,42 @@
+---   # These indicate the start of a new document.
+
+# we can store key-value pairs, but there must be a space after : . Key-value pairs are called maps
+
+"apple": "It is a red fruit"
+1: "It is a number"
+hey there: what's up
+
+...  # These indicate the end of a document (This is optional) 
+
+#YAML supports multiple documents in single file.
+
+---   
+# We can also have lists
+- banana
+- apple
+- Orange
+...
+
+---  
+
+# Block-style examples ( items must be indented using spaces )
+cities:
+ - delhi
+ - mumbai
+ - kolkata
+
+# or, another syntanx for lists
+
+cityList: [delhi, mumbai,kolkata]
+... 
+
+--- 
+# dictionary
+
+foo: { thing1: huey, thing2: louie, thing3: dewey }
+
+#or, another syntax
+foo:
+ thing1: huey
+ thing2: louie
+ thing3: dewey

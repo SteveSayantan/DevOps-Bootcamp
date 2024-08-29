@@ -5,3 +5,5 @@
 - Deployment: The App is pushed to the production environment.
 
 Using DevOps, our aim is to make the above three processes quicker using Automation.
+
+![devops](./assets/Devops1.jpeg)

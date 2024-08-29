@@ -65,9 +65,8 @@ Now, we can run a command for all the hosts under a particular group (here, **we
 ## Write Playbook
 Playbooks are used to perform multiple tasks. In the following playbook, we install nginx and start nginx.
 
-- First, we need to create an yaml file, say *playbook.yml* . It starts with **---** .
+- First, we need to create an yaml file, say *playbook.yml* . 
 
-- Maintain proper indentation.
 
   ```yaml
   ---
@@ -79,20 +78,20 @@ Playbooks are used to perform multiple tasks. In the following playbook, we inst
 
     tasks: # now we specify tasks to be performed
 
-      - name: Install nginx   # we can give any name to the task
-        apt:    # we want to use the apt module
-          name: nginx   # name of the package
-          state: present # to install nginx
+     - name: Install nginx   # we can give any name to the task
+       apt:    # we want to use the apt module
+       name: nginx   # name of the package
+       state: present # to install nginx
 
-      - name: Start nginx  # this is the name our second task
-        service:  # we want to use service module
-          name: nginx  # we are interested about nginx service
-          state: started  # to start the service
+     - name: Start nginx  # this is the name our second task
+       service:  # we want to use service module
+        name: nginx  # we are interested about nginx service
+        state: started  # to start the service
 
   # we can write multiple playbooks in single file as shown
 
   - name: Second playbook
-    ...
+    
 
   ```
 
@@ -100,6 +99,9 @@ Playbooks are used to perform multiple tasks. In the following playbook, we inst
 
   `ansible-playbook -i ./inventory playbook.yml`
 
+- Check the status of nginx by `systemctl status nginx`
+
+- Stop nginx by `sudo systemctl stop nginx`.
 
 ## Ansible Roles
 It is an efficient way to write complex playbooks. 

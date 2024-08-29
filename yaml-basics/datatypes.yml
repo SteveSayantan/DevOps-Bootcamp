@@ -1,0 +1,64 @@
+# ---- String datatype ----
+myself: Kunal Kushwaha
+fruit: "apple"
+job type: 'swe'
+
+
+bio: |    # | helps preserve the multi-line format (don't miss the indentation)
+ hey my name is kunal kushwaha.
+ i am a very nice dude.
+
+
+message: >  # > helps write a single line in multiple lines for convenience, but it will be treated as a single line
+ this will 
+ all be 
+ in one single line.
+# same as
+message: this will all be in one single line.
+
+# ---- Numbers ----
+
+number: 5473
+bigNum: 54_34_56
+marks: -98.76
+bar: 0x12d4       # 0x indicates hex value
+plop: 023332      # 0 indicates octal value
+bin: 0b1010       # 0b indicates binary value
+exp: 3E8          # this represents an exponential i.e. 3 * 10^8
+
+# ---- Boolean -----
+
+isHappy: No   # same as False, Off
+isSad: Yes    # same as True, On
+
+# ----- Null ------
+surname: Null       # same as null, NULL, ~
+~: this is a null key
+
+# dates and time
+utc time: 2022-02-05T10:30:00Z   # Z refers to UTC timezone
+date: 2022-02-05                  # it assumes 00:00:00Z
+india time: 2001-12-15T02:59:43+5:30
+no time zone: 2001-12-15 02:59:43   # it assumes utc timezone
+
+# we can also specify the type beforehand, using !! (Optional)
+
+zero: !!int 0
+positiveNum: !!int 45
+negativeNum: !!int -45
+binaryNum: !!int 0b11001
+octalNum: !!int 06574
+hexa: !!int 0x45
+commaValue: !!int +540_000 # 540,000
+
+marks: !!float 56.89
+infinite: !!float .inf    # .inf represents infinity
+not a num: .NAN           # .NAN represents NaN
+
+surname: !!null Null
+date: !!timestamp 2002-12-14
+
+
+message: !!str this is a string.
+booleanValue: !!bool No 
+exponential numbers: 6.023E56

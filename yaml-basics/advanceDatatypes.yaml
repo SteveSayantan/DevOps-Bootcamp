@@ -1,0 +1,44 @@
+# lists are of !!seq type
+student: !!seq
+ - marks
+ - name
+ - roll_no
+
+# or,
+fruit: !!seq [orange,banana,apple]
+
+
+# some of the keys of the seq might be empty, it is called sparse seq
+sparse seq:
+ - hey
+ - how
+ - 
+ - Null
+ - sup
+
+# nested sequence
+- 
+ - mango
+ - apple
+ - banana
+-
+ - marks
+ - roll num
+ - date
+
+# map type
+data: !!map
+ status: 200
+ username: Motu
+
+# keys may have duplicate values, these are known as pairs. This is considered as an array of hashtables
+
+pair example: !!pairs
+ - job: student
+ - job: teacher
+
+# same as
+pair example: !!pairs [job: student, job: teacher]
+
+
+# start from 56:42
