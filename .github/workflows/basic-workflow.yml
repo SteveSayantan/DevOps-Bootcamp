@@ -1,0 +1,19 @@
+name: CI # name of the workflow
+
+on:  workflow_dispatch  # to trigger the workflow manually (with a button), we use this event. This event will only trigger a workflow run if the workflow file exists on the default branch. 
+
+jobs:  # This workflow contains a single job called "build"
+
+  build: # name of the job
+
+    runs-on: ubuntu-latest # runs-on is the type of machine to run the job on - runner
+
+    steps: # steps are the individual tasks that make up a job
+
+      # selecting an action to run as part of a step in a job
+      - uses: actions/checkout@v4   # 'actions' is a public repo containing useful GitHub actions, 'checkout' is the action that checks-out repository so the workflow can access it, 'v4' indicates the 4th major release of it.
+
+      - name: Wohoooo # the name of the step, if not specified, he step name will default to the text specified in the run command
+
+       # Runs command-line programs. Each run keyword represents a new process and shell in the runner environment. When you provide multi-line commands, each line runs in the same shell. 
+        run: echo Hello, world!   

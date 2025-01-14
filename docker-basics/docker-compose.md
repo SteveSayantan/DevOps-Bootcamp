@@ -11,7 +11,10 @@ Using docker compose we can do these very easily only using two commands `docker
 For details, check out the [docs](https://docs.docker.com/compose/)
 
 ### HOW
-For using docker compose, we need to still write Dockerfiles. Additionally, we create a YAML file (compose.yaml) that builds and runs our containers using our Dockerfiles (or sometimes from images).
+For using docker compose, we need to still write Dockerfiles. Additionally, we create a YAML file (**compose.yaml**) that builds and runs our containers using our Dockerfiles (or sometimes from images).
+
+Each container for a service joins the default network created by Compose and is both reachable by other containers on that network, and discoverable by the service's name.
+
 
 For examples of docker-compose, checkout [this](https://github.com/docker/awesome-compose)
 

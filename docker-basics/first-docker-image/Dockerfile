@@ -4,10 +4,17 @@ FROM ubuntu:latest
 # it creates and sets the working directory for following instructions 
 WORKDIR /app
 
-# this is to copy the source file inside /app (The destination dir must have a trailing slash )
+# this is to copy the source file inside /app (The destination dir must have a trailing slash ). Also creates a new layer.
 COPY . /app/
 
 # it sets the command to be executed when running a container from an image
-CMD ./simple-bash
+ENTRYPOINT ["./simple-bash"]
 
+#   ENTRYPOINT vs CMD
+# ---------------------
+# Both CMD and ENTRYPOINT instructions define what command gets executed when running a container.
+# But, ENTRYPOINT instructions can not be overridden unlike CMD instructions.
+# hence, we can use  ENTRYPOINT to set fairly stable default commands and arguments 
+# and then use CMD to set additional defaults that are more likely to be changed.
 
+# we can override the ENTRYPOINT instruction using the "--entrypoint" flag with `docker run`.

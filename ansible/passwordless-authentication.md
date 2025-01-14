@@ -7,7 +7,7 @@ Suppose, we have two servers, namely *host1* and *host2* . We should be able to 
 
 In *host1*,
 - run `ssh-keygen` . 
-- Keep pressing **enter** to accept all the default options.
+- Keep pressing **enter↲** to accept all the default options.
 - Now, a bunch of files are created at `/home/user/.ssh` (default location).
 
   ```bash
@@ -15,8 +15,8 @@ In *host1*,
     >> authorized_keys id_rsa id_rsa.pub known_hosts
   ```
 
-- *id_isa* is private key which is used to login to machine. Never share this with anyone.
-- *id_isa.pub* is public key which is used for communication with others.
+- *id_rsa* is private key which is used to login to machine. Never share this with anyone.
+- *id_rsa.pub* is public key which is used for communication with others.
 
 In *host2*,
 
@@ -33,3 +33,5 @@ In *host2*,
   ```
 
 Now, in *host1*, we can simply run `ssh <host2_IP>` to connect to *host2* . To disconnect, use **logout** command.
+
+A documentation on how to use SSH public key authentication on Linux, click [here](https://www.linode.com/docs/guides/use-public-key-authentication-with-ssh/?tabs=ed25519-recommended%2Cssh-add%2Cusing-ssh-copy-id-recommended)

@@ -12,9 +12,9 @@
 
 1. `docker pull image_name:tag` : pulls the image with the specified tag from docker hub, e.g. `docker pull ubuntu:16.04`. The default value of tag is *latest* . 
 
-1. `docker run -it image_name:tag` : runs the new container in an interactive environment created from the image. We can optionally specify the tag as `docker run -it ubuntu:16.04` . The default value of tag is *latest* .
+1. `docker run -it image_name:tag` : runs the new container created from the image with an interactive terminal attached to it, thereby stopping the container from exiting immediately after creation. We can optionally specify the tag as `docker run -it ubuntu:16.04` . The default value of tag is *latest* .
 
-1. `docker container exec -it container_id bash` : executes the command *bash* to a running container having id *container_id*. This command fails if the container isn't running.
+1. `docker container exec -it container_id bash` : executes the command *bash* in a running container having id *container_id*. `-it` flag attaches an interactive terminal to it. This command fails if the container isn't running.
 
 1. `docker stop container1_id container2_id ...` : To stop one or more running containers. We can also use the assigned name instead of container id. 
 
@@ -32,7 +32,7 @@
 
 1. `docker commit -m "commit message" container_id new_image_name:tag` : Creates a new image with the given name from the changes done in the container. We can also optionally provide a tag. To run the newly created image, we use `docker run new_image_name:tag`.
 
-1. `docker build -t username/repo_name:tag path` : Starts building an image with the name *username/repo_name*, using the dockerfile present at *path* .We can also optionally provide a tag (defaults as *latest* ). `username` refers to the one associated with dockerhub, `repo_name` refers to the remote repo on dockerhub, where the image will be uploaded. 
+1. `docker build -t username/repo_name:tag path` : Starts building an image with the name *username/repo_name*, using the dockerfile present at *path* .We can also optionally provide a tag (defaults as *latest* ). `username` refers to the one associated with dockerhub, `repo_name` refers to the remote repo on dockerhub, where the image will be uploaded. Optionally, we can use `--no-cache` flag with this to invalidate the cache for RUN instruction in dockerfile.
 
 
 

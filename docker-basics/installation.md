@@ -73,7 +73,9 @@ docker run hello-world
 
 1. The name of the image should be same as that of the repository. Inside a repo, each image is identified using its tag. Hence, every image to be pushed must have a tag.
 
-1. Login to Docker Hub from CLI using `docker login`.
+1. Login to Docker Hub from CLI using `docker login`. Optionally, we can specify the username and password/token with **-u** and **-p** flags respectively, e.g. `docker login -u myUserName -p myPasswd`.
 
 1. Push the image using `docker push repo_name:tag`
 
+## Docker Compose
+Install Docker Compose using `sudo apt install docker-compose-v2`

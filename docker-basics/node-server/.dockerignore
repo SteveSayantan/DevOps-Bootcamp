@@ -1,0 +1,12 @@
+# IMPORTANT: the .dockerignore file should be located at the root directory of the build context !!!
+.git
+.vscode
+.dockerignore
+.gitignore
+.env
+config
+build
+node_modules
+docker-compose.yaml
+Dockerfile
+README.md

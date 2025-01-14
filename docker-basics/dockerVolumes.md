@@ -1,5 +1,5 @@
 ### WHY
-When our container needs to store some data in it, the data persists till the container is running. If the container is restarted or gone down, all the data is destroyed. So, it is a very common requirement to persist the data in a Docker container beyond the lifetime of the container.
+When our container needs to store some data in it, the data persists till the container is running. If the container is restarted or removed, all the data is destroyed. So, it is a very common requirement to persist the data in a Docker container beyond the lifetime of the container.
 
 ### HOW
 There are 2 different ways how docker solves this problem.
@@ -35,6 +35,8 @@ Check the syntactical differences, [here](https://docs.docker.com/engine/storage
 - `docker run -d --name devtest --mount source=myvol2 target=/app nginx:latest` : To mount the volume myvol2 into /app/ in the container.
 
 - `docker run -d --name devtest -v myvol2:/app nginx:latest` : To mount the volume myvol2 into /app/ in the container.
+
+- `docker inspect container_name` : Look for *Mounts* section to check if the volume is correctly mounted to the container.
 
 **If we start a container with a volume that doesn't yet exist, Docker creates the volume for us.**
 

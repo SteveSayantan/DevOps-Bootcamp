@@ -27,3 +27,6 @@
   - Most languages support YAML.
   - It can represent complex data.
 
+- References:
+  - [Official YAML Docs](https://yaml.org/spec/1.2.2/)
+  - [Learn X in Y minutes](https://learnxinyminutes.com/docs/yaml/)

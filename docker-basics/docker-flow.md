@@ -13,6 +13,19 @@ If the image is already present, then daemon directly creates the container from
 
 ## Docker Image
 
-Docker Images contain a smaller version of Operating System and all the dependecies of our app. Images are built in layers. Each layer is immutable and a collection of files and directories.
+Docker Images contain a smaller version of Operating System and all binaries, config files, and other dependencies of our app. Images are built in layers. Each image is immutable, we can only add changes on top of it or create a new image.
 
-Layers receive an ID, calculated via a SHA 256 hash of the layer contents. Thus, if the layer contents change the SHA 256 hash changes as well. If any layer of an image is already present in the local system, it is not downloaded. 
+Each layer is immutable as well. Each layer in an image contains a set of filesystem changes - additions, deletions, or modifications.Layers receive an ID, calculated via a SHA 256 hash of the layer contents. Layers can be reused between images, i.e. if any layer of an image is already present in the local system, it is not downloaded.
+
+#### Caching
+When you run the docker build command to create a new image, Docker executes each instruction in your Dockerfile, creating a layer for each command and in the order specified. 
+
+Subsequent builds after the initial are faster due to the caching mechanism, as long as the commands and context remain unchanged. Docker caches the intermediate layers generated during the build process. When you rebuild the image without making any changes to the Dockerfile or the source code, Docker can reuse the cached layers, significantly speeding up the build process.
+
+Here are a few examples of situations that can cause cache to be invalidated:
+
+- Any changes to the command of a RUN instruction invalidates that layer. Docker detects the change and invalidates the build cache if there's any modification to a RUN command in your Dockerfile.
+
+- Any changes to files copied into the image with the COPY or ADD instructions. Docker keeps an eye on any alterations to files within our project directory. Whether it's a change in content or properties like permissions, Docker considers these modifications as triggers to invalidate the cache.
+
+- Once one layer is invalidated, all following layers are also invalidated. If any previous layer, including the base image or intermediary layers, has been invalidated due to changes, Docker ensures that subsequent layers relying on it are also invalidated. This keeps the build process synchronized and prevents inconsistencies.
