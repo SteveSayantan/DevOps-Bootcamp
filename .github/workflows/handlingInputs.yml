@@ -1,0 +1,41 @@
+##########################
+# This demonstrates how to work with inputs
+# Ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#onworkflow_dispatchinputs
+#########################
+
+name: Handling Inputs in workflow_dispatch Event
+
+on: 
+  workflow_dispatch:
+    # Inputs the workflow accepts
+    inputs:
+      name:  # it helps access the value associated with this input
+
+        # friendly description
+        description: 'Person to Greet'
+        required: true
+        type: string
+
+      city:
+        description: Favorite city
+        required: true
+        default: Chandannagar
+        type: choice
+        options: [New York, Kolkata, Chandannagar]
+
+      isFavColorBlue:
+        description: Is your favorite color blue?
+        required: true
+        type: boolean
+  
+jobs:
+  greet:
+    name: This job will greet anyone!!
+    runs-on:  ubuntu-latest
+    steps:
+      - name: Send greeting
+        run: |   # the received inputs can be accessed through `github.event.inputs context`
+        echo "Hello ${{ github.event.inputs.name }}" 
+        echo "Your favorite city is ${{ github.event.inputs.city }}"
+        echo "Is your favorite color blue: ${{ github.event.inputs.fav-color-blue }}"
+
