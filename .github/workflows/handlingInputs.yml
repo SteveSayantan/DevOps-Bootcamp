@@ -33,9 +33,9 @@ jobs:
     name: This job will greet anyone!!
     runs-on:  ubuntu-latest
     steps:
-      - name: Send greeting
-        run: |   # the received inputs can be accessed through `github.event.inputs context`
+    - name: Send greeting
+      run: |   # the received inputs can be accessed through `github.event.inputs` context
         echo "Hello ${{ github.event.inputs.name }}" 
         echo "Your favorite city is ${{ github.event.inputs.city }}"
-        echo "Is your favorite color blue: ${{ github.event.inputs.fav-color-blue }}"
+        echo "Is your favorite color blue: ${{ github.event.inputs.isFavColorBlue }}"
 
