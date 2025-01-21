@@ -113,4 +113,8 @@ When accessing a variable, the lookup follows this order:
 Hence, in the above example, the output is as follows:
 
 ```bash
+value of VAR1 is myworkflowvar1
+value of VAR1 is myworkflowvar1
+value of VAR2 is myjobvar2
+value of VAR3 is mystepvar3
 ``` 
