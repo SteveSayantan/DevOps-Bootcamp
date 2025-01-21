@@ -7,7 +7,7 @@ name: CI # name of the workflow
 # Controls when the action will run
 on:  workflow_dispatch  # to trigger the workflow manually (with a button), we use this event. This event will only trigger a workflow run if the workflow file exists on the default branch. 
 
-jobs:  # This workflow contains a single job called "build"
+jobs:  # This workflow contains a single job having id "build"
 
   build: # id of this job
 

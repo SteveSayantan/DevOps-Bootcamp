@@ -1,0 +1,30 @@
+name: Creating Variables
+on: workflow_dispatch
+
+env:  # these variables would be created in all the runner instances, hence accessible throughout the entire workflow.
+  VAR1: myworkflowvar1
+  VAR2: myworkflowvar2
+  VAR3: myworkflowvar3
+
+jobs:
+
+  job1:
+    runs-on: ubuntu-latest
+
+    env:  # these variables are accessible only within this job
+      VAR2: myjobvar2
+      VAR3: myjobvar3
+
+    steps:
+
+      # we can also access a variable as $variable_name or ${{ env.variable_name }}
+
+    - run: |
+        echo value of VAR1 is $VAR1
+        echo value of VAR1 is ${{ env.VAR1 }}
+
+        echo value of VAR2 is $VAR2    
+        echo value of VAR3 is $VAR3
+
+      env: # this variable is accessible only within this step
+        VAR3: mystepvar3

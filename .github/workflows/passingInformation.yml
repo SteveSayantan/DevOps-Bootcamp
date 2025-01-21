@@ -1,0 +1,30 @@
+name: Passing Information Between Jobs
+on: workflow_dispatch
+
+jobs:
+
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+    - id: step1   # this id would be used to access the output
+
+      run: echo "test=hello" >> $GITHUB_OUTPUT # $GITHUB_OUTPUT is a default env variable that stores the path on the runner to the file that sets the current step's outputs. It is unique for each step.
+
+    - id: step2
+
+     # basically, we are appending a variable declaration to the file pointed by $GITHUB_OUTPUT
+      run: echo "test=world" >> $GITHUB_OUTPUT
+
+
+    outputs: # mapping the outputs to variables
+
+      firstOp: ${{ steps.step1.outputs.test }}   # firstOp stores hello
+      secondOp: ${{ steps.step2.outputs.test }}  # secondOp stores world
+
+  job2:
+    runs-on: ubuntu-latest
+
+    needs: job1   # to access the outputs of a particular job, the current job must depend on it
+
+    steps:
+    - run: echo ${{needs.job1.outputs.firstOp}} ${{needs.job1.outputs.secondOp}}
