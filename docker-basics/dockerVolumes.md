@@ -1,11 +1,13 @@
 ### WHY
 When our container needs to store some data in it, the data persists till the container is running. If the container is restarted or removed, all the data is destroyed. So, it is a very common requirement to persist the data in a Docker container beyond the lifetime of the container.
 
+Volumes are persistent data stores for containers, created and managed by Docker.
+
 ### HOW
 There are 2 different ways how docker solves this problem.
 
 1. Volumes
-2. Bind Directory on a host as a Mount
+2. Bind mounts
 
 ### Bind Mount
 When you use a bind mount, a file or directory on the host machine is attached to a container. The file or directory is referenced by its absolute path on the host machine. The container can read and write to the directory. It can not be managed by docker cli.
@@ -20,7 +22,7 @@ Volume is a logical partition on the host. When we use a volume, a new directory
 For details, check out the [docs](https://docs.docker.com/engine/storage/volumes/)
 
 ### Examples
-We can attach a volume to a container using either `-v` or `--mount` flag. In general, `--mount` is more explicit and verbose.
+We can create and attach a volume or a bind mount to a container using either `-v` or `--mount` flag. In general, `--mount` is more explicit and verbose.
 
 Check the syntactical differences, [here](https://docs.docker.com/engine/storage/volumes/#choose-the--v-or---mount-flag)
 
@@ -32,7 +34,11 @@ Check the syntactical differences, [here](https://docs.docker.com/engine/storage
 
 - `docker volume rm volume_name` : To remove a volume.
 
-- `docker run -d --name devtest --mount source=myvol2 target=/app nginx:latest` : To mount the volume myvol2 into /app/ in the container.
+- `docker run -d --name devtest --mount type=bind,source="$(pwd)"/target,target=/app nginx:latest` : To bind-mount the target/ directory into your container at /app/.
+
+- `docker run -d --name devtest -v "$(pwd)"/target:/app nginx:latest` : To bind-mount the target/ directory into your container at /app/.
+
+- `docker run -d --name devtest --mount type=volume source=myvol2 target=/app nginx:latest` : To mount the volume myvol2 into /app/ in the container.
 
 - `docker run -d --name devtest -v myvol2:/app nginx:latest` : To mount the volume myvol2 into /app/ in the container.
 

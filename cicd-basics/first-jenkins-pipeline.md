@@ -79,7 +79,7 @@ We can also refer to the pipeline-syntax generator at `http://<current_IP_of_ec2
     }
     ```
     Explanation
-    - first, Jenkins gets the Jenkinsfile from the repo by cloning it.
+    - first, Jenkins gets the Jenkinsfile from the repo by cloning it automatically. This is the default behavior in case of declarative pipeline. 
     - Builds a container based on the given image to run the script
     - removes the container
 

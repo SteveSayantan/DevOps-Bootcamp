@@ -18,3 +18,8 @@ ENTRYPOINT ["./simple-bash"]
 # and then use CMD to set additional defaults that are more likely to be changed.
 
 # we can override the ENTRYPOINT instruction using the "--entrypoint" flag with `docker run`.
+
+# Significance of Trailing Slashes
+# ---------------------------------
+# 1. Without a trailing slash: COPY test.txt /abs This creates a file named abs in the root directory of the container. The content of this file will be the same as test.txt.
+# 2. With a trailing slash: COPY test.txt /abs/ This creates a file named test.txt inside the /abs directory. If the /abs directory doesn't exist, Docker will create it.

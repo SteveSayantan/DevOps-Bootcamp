@@ -11,11 +11,13 @@ If the image is already present, then daemon directly creates the container from
 
 ![flow](../assets/docker-flow.png)
 
+## Dockerfile
+A Dockerfile is a text-based document that's used to create a container image. It provides instructions to the image builder on the commands to run, files to copy, startup command, and more.
+
 ## Docker Image
+A Docker Image that is a standardized package, contains a smaller version of Operating System and all binaries, config files, and other dependencies of our app. Images are built in layers. Each image is immutable, we can only add changes on top of it or create a new image.
 
-Docker Images contain a smaller version of Operating System and all binaries, config files, and other dependencies of our app. Images are built in layers. Each image is immutable, we can only add changes on top of it or create a new image.
-
-Each layer is immutable as well. Each layer in an image contains a set of filesystem changes - additions, deletions, or modifications.Layers receive an ID, calculated via a SHA 256 hash of the layer contents. Layers can be reused between images, i.e. if any layer of an image is already present in the local system, it is not downloaded.
+Each layer is immutable as well. Each layer in an image contains a set of filesystem changes - additions, deletions, or modifications. Layers receive an ID, calculated via a SHA 256 hash of the layer contents. Layers can be reused between images, i.e. if any layer of an image is already present in the local system, it is not downloaded.
 
 #### Caching
 When you run the docker build command to create a new image, Docker executes each instruction in your Dockerfile, creating a layer for each command and in the order specified. 

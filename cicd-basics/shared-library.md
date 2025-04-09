@@ -6,7 +6,7 @@ In future, any modification to  shared libraries automatically reflect in all de
 Additionally, shared libraries are stored in version control systems like Git, enabling versioning, tracking changes, and rolling back if needed.
 
 ## HOW
-In the same GitHub repo containing our project or a separate one, we need to create a `vars` directory (in the root). Inside it, we shall store our Groovy scripts to be used in our pipelines. Each script should contain a **call** method.
+In a separate GitHub repo, we need to create a `vars` directory (in the root). Inside it, we shall store our Groovy scripts to be used in our pipelines. Each script should contain a **call** method. This repo must not contain anything else except the libraries.
 
 >The scripts must be named in camelCase or all lowercase.
 
@@ -35,7 +35,7 @@ See the below examples for clarity.
   ```
   To use it in our pipeline,
   ```groovy
-  @Library("name-of-library") _     //provide the same name used to add the library to Jenkins
+  @Library("name-of-library") _     //provide the same name used to add the library to Jenkins. The whitespace followed by the _ is used to import everything in specified the library
 
   pipeline {
     agent {label 'agent-demo'} 

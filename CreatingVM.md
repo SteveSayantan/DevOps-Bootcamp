@@ -67,7 +67,7 @@ If we have to create only one instance, we may use this approach:
 
 ## Steps to SSH into the EC2 instance from a terminal
 
-Here, we would take a look at the steps to SSH into our EC2 instance using `ssh` command. We would require the the key-value file associated with the instance.
+Here, we would take a look at the steps to SSH into our EC2 instance using `ssh` command. We would require the the key-value file (private key) associated with the instance.
 
 Make sure the permisson bits of the key-value file looks like this `-rwx------` i.e. none other than the user should have access to this file, otherwise we shall get error while connecting.
 

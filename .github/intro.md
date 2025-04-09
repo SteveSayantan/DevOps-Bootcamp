@@ -4,7 +4,7 @@ GitHub Actions is a continuous integration and continuous delivery (CI/CD) platf
 GitHub Actions goes beyond just DevOps and lets us run workflows when other events happen in our repository. For example, we can run a workflow to automatically add the appropriate labels whenever someone creates a new issue in our repository.
 #### Resources
 - [Docs](https://docs.github.com/en/actions/about-github-actions/understanding-github-actions)
-- [Mickey Goussel YT](https://youtube.com/playlist?list=PLiO7XHcmTsleVSRaY7doSfZryYWMkMOxB&si=kT7crVPw3xdNlznG)
+- [Mickey Gousset YT](https://youtube.com/playlist?list=PLiO7XHcmTsleVSRaY7doSfZryYWMkMOxB&si=kT7crVPw3xdNlznG)
 
 #### Overview
 - **Workflow** - A workflow is a configurable automated process made up of one or more jobs. Workflows are defined in `.yml` files in the `.github/workflows` directory of your repository.

@@ -1,0 +1,47 @@
+name: two-tier
+services:
+  mysql:
+    image: mysql:9
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password   # as per dockerhub, mysql itself will load passwords from this file specified as env var
+      MYSQL_DATABASE: devops
+      MYSQL_USER: admin
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password   # as per dockerhub, mysql itself will load passwords from this file specified as env var
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "--silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    secrets: [db_password,db_root_password]  # now, this service can access the specified secrets
+
+  flask-app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: admin
+      MYSQL_PASSWD_FILE: /run/secrets/db_password   # In our python app, we need to read the file explicitly to access its content
+      MYSQL_DB: devops
+    depends_on:
+      mysql:
+        condition: service_healthy  
+    restart: always
+    secrets: [db_password]
+
+volumes:
+  mysql-data:
+
+secrets:
+  db_password:        # this secret will create a file /run/secrets/db_password in the container that has access to it.
+    file: ./db_password.txt
+  db_root_password:   # this secret will create a file /run/secrets/db_root_password in the container that has access to it.
+    file: ./db_root_password.txt
+
+
+
+# Important: In case of "Access denied for user 'root'@'mysql' (using password: YES)" error, try to remove the volume and start over again.
+    

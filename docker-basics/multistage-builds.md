@@ -5,6 +5,10 @@ However, these extra files and libraries are required to download our dependenci
 
 To handle this issue, docker has introduced **Multi-stage builds** where the Dockerfile is divided into multiple parts.
 
+In a traditional build, all build instructions are executed in sequence, and in a single build container: downloading dependencies, compiling code, and packaging the application. All those layers end up in your final image. This approach works, but it leads to bulky images carrying unnecessary weight and increasing your security risks. This is where multi-stage builds come in.
+
+With multi-stage builds, a Docker build uses one base image for compilation, packaging, and unit tests and then a separate image for the application runtime. As a result, the final image is smaller in size since it doesn’t contain any development or debugging tools. By separating the build environment from the final runtime environment, you can significantly reduce the image size and attack surface. This is especially beneficial for applications with large build dependencies.
+
 ### HOW
 - In the first stage, we choose a rich base image and install all our dependencies effortlessly.
 

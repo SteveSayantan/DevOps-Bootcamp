@@ -1,7 +1,9 @@
 ### WHAT
-Containers need to communicate to other containers and the host system. However, sometimes we want some containers totally isolated from other ones. The solutions for both of the issues are offered by docker networking.
+Container networking refers to the ability for containers to connect to and communicate with each other, or to non-Docker workloads. However, sometimes we want some containers totally isolated from other ones. The solutions for both of the issues are offered by docker networking.
 
 ### HOW
+Containers have networking enabled by default, and they can make outgoing connections. A container has no information about what kind of network it's attached to, or whether their peers are also Docker workloads or not. A container only sees a network interface with an IP address, a gateway, a routing table, DNS services, and other networking details. That is, unless the container uses the `none` network driver.
+
 Useful network drivers provided by Docker:
 
 - Whenever we create a container, it is connected to Docker's default bridge network **docker0**, aka **bridge** . A container is connected to **docker0** using a **veth** interface. One end of the **veth** pair is placed inside the container's network namespace, acting as its network interface, while the other end is attached to **docker0**, enabling communication with other containers on the same bridge only. Containers on the default bridge network can only access each other by IP addresses.

@@ -136,3 +136,6 @@ jobs:
 
 - `job-4` depends on both `job-2` and `job-3`. If any of them skips or fails, `job-4` also skips. 
   - However, due to `if: always()`, `job-4` runs irrespective of the success of its dependencies i.e. even if any of its dependencies fails or skips, `job-4` would execute.
+
+## Notes
+- Within a job, if one step fails, the following steps are skipped (default behavior).

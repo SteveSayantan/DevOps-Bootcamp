@@ -35,22 +35,26 @@ sudo apt-get install jenkins
 
 ### Login to Jenkins using the below URL:
 
-`http://<ec2-instance-public-ip-address>:8080 `
+```
+http://<ec2-instance-public-ip-address>:8080
+```
 
 After you login to Jenkins, 
-      - Run the command to copy the Jenkins Admin Password - `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
-      - Enter the Administrator password
-      - Click on Install suggested plugins
+- Run the command to copy the Jenkins Admin Password:
+  ```
+  sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+  ```
+- Enter the Administrator password
 
-Wait for the Jenkins to Install suggested plugins
+- Click on Install suggested plugins
 
+  Wait for the Jenkins to Install suggested plugins
 
-Create First Admin User.
+- Create First Admin User.
 
+Jenkins Installation is Successful 🎉🥳. You can now starting using it. 
 
-Jenkins Installation is Successful. You can now starting using the Jenkins. 
-
-Installing Jenkins will create a *jenkins* user.
+> Installing Jenkins will create a *jenkins* user.
 
 Nowadays, Jenkins is used with docker as agents i.e. the jenkins stages will be executed in docker containers. It is useful in terms of cost and efficiency.
 

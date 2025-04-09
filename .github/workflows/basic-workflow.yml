@@ -22,4 +22,4 @@ jobs:  # This workflow contains a single job having id "build"
 
       - name: Check out repository code as 2nd step!!
       # selecting an action to run as part of a step
-        uses: actions/checkout@v4   # 'actions' is a public repo containing useful GitHub actions, 'checkout' is the action that checks-out repository so the workflow can access it, 'v4' indicates the 4th major release of it.
+        uses: actions/checkout@v4   # 'actions' is the name of GitHub organization, 'checkout' is a repo in it containing code to perform check-out any repository so the workflow can access it, 'v4' indicates the 4th major release of 'checkout'.

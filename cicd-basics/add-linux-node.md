@@ -122,7 +122,6 @@ In GitHub,
 - Go to **Webhooks** under the **Settings** tab of the corresponding repository.
 - Click on **Add webhook**
 - In **Payload URL**, write `http://<IP_of_jenkins_master>:8080/github-webhook/`. GitHub will hit this endpoint to trigger the pipeline.
-- Disable the **SSL verification** if working with http.
 - Choose the type of event which would run this webhook, as per requirement.
 - Click on **Add webhook** .
 - Check the **Recent Deliveries** section in the webhook configuration to verify if the connection was successful.

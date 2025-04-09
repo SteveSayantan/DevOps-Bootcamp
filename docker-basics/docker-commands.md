@@ -12,7 +12,8 @@
 
 1. `docker pull image_name:tag` : pulls the image with the specified tag from docker hub, e.g. `docker pull ubuntu:16.04`. The default value of tag is *latest* . 
 
-1. `docker run -it image_name:tag` : runs the new container created from the image with an interactive terminal attached to it, thereby stopping the container from exiting immediately after creation. We can optionally specify the tag as `docker run -it ubuntu:16.04` . The default value of tag is *latest* .
+1. `docker run -it image_name:tag` : runs the new container created from the image with an interactive terminal attached to it, thereby stopping the container from exiting immediately after creation/start.
+    - We can optionally specify the tag as `docker run -it ubuntu:16.04` . The default value of tag is *latest* .
 
 1. `docker container exec -it container_id bash` : executes the command *bash* in a running container having id *container_id*. `-it` flag attaches an interactive terminal to it. This command fails if the container isn't running.
 
@@ -32,8 +33,17 @@
 
 1. `docker commit -m "commit message" container_id new_image_name:tag` : Creates a new image with the given name from the changes done in the container. We can also optionally provide a tag. To run the newly created image, we use `docker run new_image_name:tag`.
 
-1. `docker build -t username/repo_name:tag path` : Starts building an image with the name *username/repo_name*, using the dockerfile present at *path* .We can also optionally provide a tag (defaults as *latest* ). `username` refers to the one associated with dockerhub, `repo_name` refers to the remote repo on dockerhub, where the image will be uploaded. Optionally, we can use `--no-cache` flag with this to invalidate the cache for RUN instruction in dockerfile.
+1. `docker build -t username/repo_name:tag build_ctx_path` : Starts building an image with the name *username/repo_name*, with the *build_ctx_path* as build context, from the **Dockerfile** present in the build context. We can also optionally provide a tag (defaults as *latest* ). `username` refers to the one associated with dockerhub, `repo_name` refers to the remote repo on dockerhub, where the image will be uploaded. Optionally, we can use `--no-cache` flag with this to invalidate the cache for RUN instruction in Dockerfile.
 
+    - Use `-f` flag to specify the name/path of another file to be used as Dockerfile e.g. `docker build -t vite-react-slim:v1 -f Dockerfile-Multistage .` : This will create an image based on the file **Dockerfile-Multistage** in the the current directory, and use the current directory as build-context.
 
+## Reference
+- [Docker CLI Reference](https://docs.docker.com/reference/cli/docker/)
 
+- [Docker Scout](https://docs.docker.com/scout/)
 
+- [Mastering Dockerfile USER](https://medium.com/otomi-platform/mastering-dockerfile-user-the-key-to-seamless-kubernetes-deployment-c5d34414210e)
+
+- [Understanding the Docker USER Instruction](https://www.docker.com/blog/understanding-the-docker-user-instruction/)
+
+- [Use a RUN cache between builds](https://yuki-nakamura.com/2024/02/04/use-a-run-cache-between-builds-in-buildkit/)

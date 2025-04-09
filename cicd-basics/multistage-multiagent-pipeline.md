@@ -26,3 +26,4 @@ pipeline {
     }
 }
 ```
+> Since we are using different agent for each stage, Jenkins will checkout the source code at the beginning of each stage due to the default behavior of declarative pipeline.
