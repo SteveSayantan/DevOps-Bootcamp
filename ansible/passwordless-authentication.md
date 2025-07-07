@@ -32,6 +32,10 @@ In *host2*,
   ssh-ed23uoirut...
   ```
 
-Now, in *host1*, we can simply run `ssh <host2_IP>` to connect to *host2* . To disconnect, use **logout** command.
+Now, in *host1*, we can simply run `ssh <user_name>@<host2_IP>` to connect to *host2* .
+```bash
+ssh ubuntu@13.218.232.238
+```
+To disconnect, use **logout** command.
 
-A documentation on how to use SSH public key authentication on Linux, click [here](https://www.linode.com/docs/guides/use-public-key-authentication-with-ssh/?tabs=ed25519-recommended%2Cssh-add%2Cusing-ssh-copy-id-recommended)
+>A documentation on how to use SSH public key authentication on Linux, click [here](https://www.linode.com/docs/guides/use-public-key-authentication-with-ssh/?tabs=ed25519-recommended%2Cssh-add%2Cusing-ssh-copy-id-recommended)

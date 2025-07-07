@@ -12,7 +12,12 @@
 
 1. `docker pull image_name:tag` : pulls the image with the specified tag from docker hub, e.g. `docker pull ubuntu:16.04`. The default value of tag is *latest* . 
 
-1. `docker run -it image_name:tag` : runs the new container created from the image with an interactive terminal attached to it, thereby stopping the container from exiting immediately after creation/start.
+1. `docker run -it image_name:tag` : runs the new container created from the image.
+
+    - `-t` flag attaches a pseudo-TTY to the container, connecting the terminal to the I/O streams of the container. 
+    - `-i` opens the **STDIN** of the container to let us send input to it 
+    
+    Thereby stopping the container from exiting immediately after creation/start.
     - We can optionally specify the tag as `docker run -it ubuntu:16.04` . The default value of tag is *latest* .
 
 1. `docker container exec -it container_id bash` : executes the command *bash* in a running container having id *container_id*. `-it` flag attaches an interactive terminal to it. This command fails if the container isn't running.
