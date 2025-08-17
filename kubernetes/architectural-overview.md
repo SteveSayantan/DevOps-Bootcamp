@@ -94,6 +94,32 @@ Examples include: Pods, Deployments,Namespaces etc.
    * CustomResourceDefinitions (CRDs)
 
 
+### Example: Pod
+
+We can create a Pod in one of the following ways:
+
+- **Imperative command**: `kubectl run nginx --image=nginx --port 80`
+
+   This created a **Pod** running an Nginx container, which by default listens on **port 80**. The `--port` flag in `kubectl run` is **only metadata**, useful for creating Services or documentation. It **does not affect** whether the container listens or accepts connections.
+
+- **Imperative object configuration**: `kubectl apply -f pod.yaml`
+
+  ```yaml
+  # pod.yaml
+  apiVersion: v1
+  kind: Pod
+  metadata:
+   name: nginx
+   spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:  # this is optional, only for metadata. Not specifying a port here DOES NOT prevent that port from being exposed.
+        - containerPort: 80
+  ```
+
+Since, every container in a Pod shares the network namespace of the Pod, including the IP address and network ports, we can directly execute `curl <POD's_IP>` inside the cluster and successfully receive the **Nginx welcome page**.
+
 ## Important Insights
 1. Containers are nothing but linux processes. They use linux **Namespaces** to isolate and run themselves.
 

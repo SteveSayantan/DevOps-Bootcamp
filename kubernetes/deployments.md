@@ -85,5 +85,42 @@ kubectl apply -f deployment.yaml
 5. **Kubelets** pull images and start containers.
 6. Health checks keep Pods alive and ready.
 
+## Example Deployment
+
+```yaml
+apiVersion: apps/v1 # 'apps' is the group name of Deployment. Pods, Namespace do not belong to any group.
+
+kind: Deployment
+
+metadata:   # contains metadata
+  name: nginx-deployment    # should be unique in the correponding namespace
+  namespace: demo-ns # an existing namespace in which the deployment would be created. If omitted, the object will be created in the default namespace
+  labels:   # Labels are key/value pairs that are attached to objects, act as identifying attributes of objects
+    app: nginx
+spec:
+  replicas: 3  # specifies the number of desired Pods. It defaults to 1.
+
+  selector:   # It is a required field that specifies a label selector for the Pods targeted by this Deployment.
+    matchLabels:
+      app: nginx
+
+  template: #  it is a Pod template. It has exactly the same schema as a Pod, except it is nested and does not have an apiVersion or kind
+    metadata:
+      labels:    # it must match with .spec.selector, or it will be rejected by the API
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+```
+### Scaling Up/Down
+- `kubectl scale deployment nginx-deployment --replicas=5` : Makes 5 replicas of the corresponding pod.
+- `kubectl scale deployment nginx-deployment --replicas=0` : Removes all the corresponding pods. 
+
+### Rolling Update
+Users expect applications to be available all the time, and developers are expected to deploy new versions of them several times a day. In Kubernetes this is done with rolling updates. A rolling update allows a Deployment update to take place with zero downtime. It does this by incrementally replacing the current Pods with new ones. The new Pods are scheduled on Nodes with available resources, and Kubernetes waits for those new Pods to start before removing the old Pods.
+> Rolling updates allow Deployments' update to take place with zero downtime by incrementally updating Pods instances with new ones.
 
 
