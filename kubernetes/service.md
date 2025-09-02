@@ -24,6 +24,8 @@ The Service API, part of Kubernetes, is an abstraction to help us expose groups 
 
 * Offering **load balancing** across these Pods.
 
+Service uses endpoints which are basically slices each containing 100 container IPs. The IP tables are updated everytime a pod is created/destroyed.
+
 ---
 
 
@@ -51,9 +53,9 @@ spec:
 
 ## ⚙️ Modes of Services in Kubernetes
 
-| Mode |Purpose|
-| ------------------------- | --------------------|
-| **ClusterIP** *(default)* | Accessible **only within the cluster**, on a cluster-internal IP.|
+| Mode                      | Purpose                                                                          |
+| ------------------------- | -------------------------------------------------------------------------------- |
+| **ClusterIP** *(default)* | Accessible **only within the cluster**, on a cluster-internal IP.                |
 | **NodePort**              | Exposes service on a **static port on each Node**.                               |
 | **LoadBalancer**          | Provisions an **external IP** via a cloud provider.                              |
 
@@ -81,6 +83,7 @@ spec:
   ports:
     - port: 80          # Port exposed by the service
       targetPort: 8080  # Pod's container port
+
 ```
 
 #### 🔍 What Happens Behind the Scenes?
@@ -100,7 +103,9 @@ When we apply the above Service:
 
 ### NodePort
 
-A NodePort is a type of Kubernetes Service that exposes a Pod to external traffic by opening a static port on every node in the cluster and routing traffic from that port to any of the target Pods present in any of the nodes .
+A NodePort is a type of Kubernetes Service that exposes a Pod to external traffic by opening a static port on every node in the cluster and routing traffic from that port to any of the target Pods present in any of the nodes. Whenever we create this service, an entry is added to the iptable of each node. 
+
+> NodePort should only be used for testing purpose.
 
 **YAML Example: NodePort Service**
 
@@ -133,7 +138,7 @@ spec:
   my-service   NodePort   10.96.211.93   <none>   80:31563/TCP   12s
   ```
 
-- We can now access our app using <NodeIP>:<NodePort> from outside the cluster.
+- We can now access our app using `<NodeIP>:<NodePort>` from outside the cluster.
 
 - The ClusterIP Service forwards the traffic to one of the matching Pods. This Pod-level balancing is handled by **kube-proxy**.
 
@@ -204,8 +209,8 @@ Kubernetes:
 
 
 #### Advantages of Cloud-Managed Load Balancer
-| Feature| Advantage |
-| --------------------------|------------------------|
+| Feature                                | Advantage|
+| -------------------------------------- | ---------------|
 | **1. Fully Managed by Cloud Provider** | We don’t need to manually install, configure, or maintain the load balancer. The cloud handles everything — provisioning, monitoring, scaling, and fault recovery. |
 | **2. Public Accessibility**            | It automatically provides a **public IP or DNS**, making our app globally accessible without extra steps.                                                          |
 | **3. Built-in Load Distribution**      | Distributes traffic evenly across Kubernetes worker nodes and then to Pods — ensuring high availability and better performance.                                     |
@@ -215,3 +220,11 @@ Kubernetes:
 | **7. Logging & Monitoring**            | Native integration with cloud logging and monitoring tools (e.g., AWS CloudWatch, GCP Operations) for better visibility and debugging.                              |
 | **8. DDoS Protection & Firewall**      | Some cloud LBs come with **built-in DDoS protection**, firewall rules, and rate limiting — essential for production-grade apps.                                     |
 | **9. Ingress Controller Friendly**     | Can be used behind an **Ingress controller** (like NGINX or Traefik) to expose many services through **a single external IP**.                                      |
+
+### External Name
+- Used to communicate with service hosted outside the k8s cluster
+- It uses only DNS names, no IP is used.
+- Also used to communicate with service in other NS. It abstracts the IP details, Service name etc. of the Service we want to communicate with, only the DNS name is sufficient.
+
+### Headless Service
+It's clusterIP service with clusterIP:None. used with stateful set. It does not get a clusterIP.
