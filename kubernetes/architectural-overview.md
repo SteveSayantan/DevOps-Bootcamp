@@ -1,5 +1,4 @@
-## Terminologies
-
+### Terminologies
 1. Cluster: It is the collection of a master node aka control plane and multiple worker nodes. A node is basically a server or a VM. 
    > We can also run K8s in a single node where it acts both as a control plane and a worker node.
 
@@ -7,9 +6,12 @@
    - Declarative: By writing a YAML file. The file will be given to the control plane by KubeCTL.
    - Imperative: Only writing commands in the terminal.
 
+### Cluster Architecture
+![Cluster Architecture](https://kubernetes.io/images/docs/kubernetes-cluster-architecture.svg)
+
 ### Control Plane Components
 
-Control Plane: It is also known as Master node. It manages the worker nodes in the cluster. It consists of various components:
+- **Control Plane**: It is also known as Master node. It manages the worker nodes in the cluster. It consists of various components:
 
 - **API Server**: It takes care of all the communications in favour of the K8s cluster. We send YAML config files (aka K8s Manifest files) via HTTPS POST request to the endpoint created by it. 
    

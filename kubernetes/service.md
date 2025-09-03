@@ -227,4 +227,4 @@ Kubernetes:
 - Also used to communicate with service in other NS. It abstracts the IP details, Service name etc. of the Service we want to communicate with, only the DNS name is sufficient.
 
 ### Headless Service
-It's clusterIP service with clusterIP:None. used with stateful set. It does not get a clusterIP.
+It's clusterIP service with `clusterIP:None`. used with stateful set. It does not get a clusterIP.
