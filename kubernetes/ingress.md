@@ -15,9 +15,22 @@ Ingress in Kubernetes consists of two major components:
 
 - **Ingress Controller** : Only creating an Ingress resource has no effect. In order for the Ingress resource to work, the cluster must have an ingress controller running. Ingress controllers are <u>not started automatically</u> with a cluster. We need to choose the ingress controller implementation that best fits our cluster.
 
-It is a pod or set of pods (created using a Deployment) that listens for Ingress resources and proxies traffic based on them. Some popoular Ingress Controllers are nginx, contour, haproxy, traefik, istio etc. Ingress controllers have additional intelligence built-in to monitor the kubernetes cluster for new ingress resources and modify themselves accordingly. 
+It is a pod or set of pods (created using a Deployment) that listens for Ingress resources and proxies traffic based on them. Some popoular Ingress Controllers are nginx, contour, haproxy, traefik, istio etc. Ingress controllers have additional intelligence built-in to monitor the kubernetes cluster for new ingress resources and modify themselves accordingly.
+
+Kubernetes supports multiple Ingress Controllers running in the same cluster, and we can target a specific controller inside a Ingress resource using `spec.ingressClassName` attribute. As a result, the Ingress would be handled only by the controller registered with that name. The value of `ingressClassName` comes from an **IngressClass** resource that the Ingress Controller registers.
 
 > Ingress doesn’t create or expose a public IP on its own. We need a LoadBalancer/NodePort Service in front of the ingress controller to forward all incoming internet traffic to the ingress controller pods. Without that LoadBalancer Service, our ingress controller pods would only have internal cluster IPs. 
+
+### 🔍 What is the DefaultBackend in an Ingress?
+* An Ingress routes HTTP/HTTPS traffic based on *rules* you define: host headers, paths, etc.
+* Traffic that **doesn’t match any rule** needs somewhere to go — that somewhere is the *default backend*. 
+* If no `.spec.rules` match an incoming request, the `defaultBackend` handles it.
+
+The default backend can be specified:
+
+* In the **Ingress controller’s configuration** (many controllers have a built-in fallback backend).
+* Directly in an Ingress resource under `.spec.defaultBackend`.
+* If we don’t explicitly define `.spec.defaultBackend` and your Ingress has no matching rules for a request, the behavior depends on the Ingress controller (often a 404 response).
 
 ## 🎯 Why Ingress is Useful *Even When* We Have LoadBalancer Service
 
@@ -90,5 +103,6 @@ The **Service** abstraction is deliberately minimal and portable.
 
 
 ## Ingress Examples
+
 
 

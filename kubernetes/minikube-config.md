@@ -1,4 +1,4 @@
-1. `minikube start -n 3 -p demo-cluster` : Spins up a cluster named **demo-cluster** with 3 nodes. The default value of `-p` is *minikube** and `-n` is **1**.
+1. `minikube start -n 3 -p demo-cluster` : Spins up a cluster named **demo-cluster** with 3 nodes. The default value of `-p` is **minikube** and `-n` is **1**. While creating a cluster, if we want to reuse the existing base image and avoid downloading a new one, use `--base-image` flag.
 
 1. `minikube profile list` : Lists the clusters.
 
