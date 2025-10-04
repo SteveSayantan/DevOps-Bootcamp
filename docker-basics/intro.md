@@ -34,7 +34,7 @@ We can also run containers on physical servers with an OS. But, containers and V
 
 
 ## Why are containers light-weight?
-Containers are lightweight because they share the host operating system's kernel, while still providing isolation for the application and its dependencies inside the container from processes or resources outside the container. This results in a smaller footprint compared to traditional virtual machines, as the containers do not need to include a full operating system. Additionally, Docker containers are designed to be minimal, only including what is necessary for the application to run, further reducing their size. VMs, on the other hand, emulate an entire operating system, including all its libraries, utilities, and system files, resulting in a much larger size.
+Containers are lightweight because they share the host operating system's kernel, network stack, and filesystem drivers while still providing isolation for the application and its dependencies inside the container from processes or resources outside the container. This results in a smaller footprint compared to traditional virtual machines, as the containers do not need to include a full operating system. Additionally, Docker containers are designed to be minimal, only including what is necessary for the application to run, further reducing their size. VMs, on the other hand, emulate an entire operating system, including all its libraries, utilities, and system files, resulting in a much larger size.
 
 #### Files and Folders in container base images
 
@@ -52,11 +52,11 @@ Containers are lightweight because they share the host operating system's kernel
 
 - `/root`: is the home directory of the root user.
 
-#### Files and Folders that containers use from host operating system
+> By default, containers have their own isolated filesystem and do not directly use the host's filesystem
 
-- The host's file system: Docker containers can access the host file system using bind mounts, which allow the container to read and write files in the host file system.
+#### What containers use from host operating system
 
-- Networking stack: The host's networking stack is used to provide network connectivity to the container. Docker containers can be connected to the host's network directly or through a virtual network.
+- Docker containers can access (explicitly) the host file system using bind mounts, which allow the container to read and write files in the host file system.
 
 - System calls: The host's kernel handles system calls from the container, which is how the container accesses the host's resources, such as CPU, memory, and I/O.
 

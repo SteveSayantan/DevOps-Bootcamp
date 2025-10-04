@@ -6,7 +6,7 @@ Containers have networking enabled by default, and they can make outgoing connec
 
 Useful network drivers provided by Docker:
 
-- Whenever we create a container, it is connected to Docker's default bridge network **docker0**, aka **bridge** . A container is connected to **docker0** using a **veth** interface. One end of the **veth** pair is placed inside the container's network namespace, acting as its network interface, while the other end is attached to **docker0**, enabling communication with other containers on the same bridge only. Containers on the default bridge network can only access each other by IP addresses.
+- Whenever we create a container, it is connected to Docker's default bridge network **docker0**, aka **bridge** . A container is connected to **docker0** using a **veth** interface. One end of the **veth** pair is placed inside the container's network namespace, acting as its network interface, while the other end is attached to **docker0**, enabling communication with other containers on the same bridge only. Containers on the default bridge network can only access each other by IP addresses, but they’re isolated from those outside the network unless we publish their port to access them from the host.
 
   ![default_bridge](../assets/bridge1.png)
 

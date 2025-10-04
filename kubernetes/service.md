@@ -20,7 +20,7 @@ The Service API, part of Kubernetes, is an abstraction to help us expose groups 
 
 * Giving a **stable IP** and **DNS name** to a set of Pods. Instead of clients directly accessing individual Pod IPs, they interact with the Service's stable IP address or name
 
-* Services handle the discovery of Pods dynamically. They achieve this using labels and selectors instead of tracking IP addresses. When Pods are created, they are assigned specific labels (e.g., app: payment). The Service is configured to watch for Pods with these specific labels. If a Pod's IP changes due to a restart, as long as the new Pod has the same label, the Service will automatically discover and include it in its load-balancing pool, ensuring continuous connectivity
+* Services handle the discovery of Pods dynamically. They achieve this using labels and selectors instead of tracking IP addresses. When Pods are created, they are assigned specific labels (e.g., app: payment). <u>The Service is configured to watch for Pods with these specific labels</u>. If a Pod's IP changes due to a restart, as long as the new Pod has the same label, the Service will automatically discover and include it in its load-balancing pool, ensuring continuous connectivity
 
 * Offering **load balancing** across these Pods.
 
