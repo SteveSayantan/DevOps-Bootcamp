@@ -48,7 +48,7 @@ Key characteristics:
 
 1. Creation
 
-   A ServiceAccount is created either automatically (`default`) or manually via YAML/`kubectl`.
+   A ServiceAccount is created either automatically (`default` ServiceAccount) or manually via YAML/`kubectl`.
 
    ```yaml
    apiVersion: v1
@@ -80,16 +80,16 @@ Key characteristics:
 
 ### Authentication
 
-Requests from your Pod to the API server use these tokens and are authenticated as:
-
+Requests from our Pod to the API server use these tokens and are authenticated as:
 ```
 system:serviceaccount:<namespace>:<serviceaccount-name>
 ```
 
-and are part of groups:
+Every service account is automatically part of two groups:
 
-* `system:serviceaccounts`
-* `system:serviceaccounts:<namespace>`
+* `system:serviceaccounts`:This is a cluster-wide group that includes all service accounts in the cluster.
+* `system:serviceaccounts:<namespace>`:This is a namespace-specific group that includes all service accounts within that namespace.
+
 
 ## Manually retrieve ServiceAccount credentials
 If we need the credentials for a ServiceAccount to mount in a non-standard location, or for an audience that isn't the API server, use one of the following methods. 
@@ -110,7 +110,7 @@ In both of the cases, it is a good practice to disable the automatic mount of th
     "apiVersion": "authentication.k8s.io/v1",
     "kind": "TokenRequest",
     "spec": {
-      "audiences": ["vault"],  # it sets a property on the JWT. Only the systems that validate tokens against "vault" as an accepted audience will accept it. 
+      "audiences": ["vault"],  // it sets a property on the JWT. Only the systems that validate tokens against "vault" as an accepted audience will accept it. 
       "expirationSeconds": 3600
     }
   }

@@ -29,7 +29,7 @@ Important configurations are stored in `/etc/nginx` directory.
 
 - [Using Free Let’s Encrypt SSL/TLS Certificates with NGINX](https://www.f5.com/company/blog/nginx/using-free-ssltls-certificates-from-lets-encrypt-with-nginx)
 
-- [Setup SSL in Nginx on Ubuntu by ChaiCode](https://docs.chaicode.com/ssl-in-nginx-ubuntu/)
+- [Setup SSL in Nginx on Ubuntu by ChaiCode](https://docs.chaicode.com/youtube/chai-aur-devops/nginx-ssl-setup/)
 
 ### Terminologies
 

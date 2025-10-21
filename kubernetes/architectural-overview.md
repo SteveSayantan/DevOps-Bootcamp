@@ -42,7 +42,7 @@
    CCM is opensource and different cloud providers can add support for their cloud platform.
 
 ### Data Plane Components
-- **Kubelet**: It is present on every worker node. It listens to the API server and allocates resources on the corresponding node. It maintains the pods and makes sure all pods are running. If it fails to allocate resources or pods stop, it reports back to control plane.
+- **Kubelet**: It is present on every worker node. It listens to the API server. Kubelet invokes the CRI which pulls the image, creates the container and starts the container. CRI also invokes CNI. It maintains the pods and makes sure all pods are running. If it fails to allocate resources or pods stop, it reports back to control plane.
 
 - **Kube-proxy**: Kube-proxy maintains network rules on nodes. These network rules allow network communication to your pods from network sessions inside or outside of your cluster. It deals with iptables every time a pod is created.
 
@@ -112,15 +112,18 @@ We can create a Pod in one of the following ways:
   kind: Pod
   metadata:
    name: nginx
-   spec:
+  spec:
       containers:
       - name: nginx
         image: nginx:1.14.2
         ports:  # this is optional, only for metadata. Not specifying a port here DOES NOT prevent that port from being exposed.
         - containerPort: 80
   ```
-
 Since, every container in a Pod shares the network namespace of the Pod, including the IP address and network ports, we can directly execute `curl <POD's_IP>` inside the cluster and successfully receive the **Nginx welcome page**.
+
+In a Pod spec:
+- `command` in YAML → overrides ENTRYPOINT.
+- `args` in YAML → overrides CMD.
 
 ## Important Insights
 1. Containers are nothing but linux processes. They use linux **Namespaces** to isolate and run themselves.

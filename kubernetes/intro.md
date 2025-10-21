@@ -176,4 +176,10 @@ In June 2014, Google open-sourced Kubernetes as an independent project.
 ## References
 - Important article, [Kubernetes and Docker](https://kubernetes.io/blog/2020/12/02/dont-panic-kubernetes-and-docker/)
 
-- [Docker docs](https://kubernetes.io/docs/concepts/overview/)
+- [k8s docs](https://kubernetes.io/docs/concepts/overview/)
+
+- [kubectl context vs cluster](https://stackoverflow.com/a/59752672)
+
+- docker desktop (both mac and windows) uses a Linux virtual machine (e.g. wsl2 for windows) behind the scenes for running regular docker daemon. Also, it provides a GUI for simplicity. For further clarification, check out [docker desktop vs docker engine](https://forums.docker.com/t/difference-between-docker-desktop-and-docker-engine/124612/2)
+
+- [containerd vs Docker](https://www.docker.com/blog/containerd-vs-docker/)
