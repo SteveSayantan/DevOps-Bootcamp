@@ -6,40 +6,44 @@ Here, we have two ec2 instances. In one of those, we shall install **ansible**, 
 ## Installation in Ubuntu
 
 ```
-    sudo apt update
-    sudo apt install ansible
+sudo apt update
+sudo apt install ansible
 ```
 
 ## Ansible Playbook
-A script written in Bash is called Bash Script. A script written in Python is called Python Script. Similarly, a file containing Ansible script is called Ansible Playbook.
+A script written in Bash is called Bash Script. A script written in Python is called Python Script. Similarly, a file containing Ansible script in YAML is called Ansible Playbook. Playbooks are reusable and can be version-controlled.
 
 ## Ansible Adhoc Commands
 If we need to run some basic commands say, `ls` or `echo hello world`, we don't create a bash file for it. Similarly, for simple tasks, we need not write Ansible Playbooks, we can directly run Ansible CLI commands. Such commands are called [ad-hoc commands](https://docs.ansible.com/ansible/latest/command_guide/intro_adhoc.html) .
 
+Default syntax to write ad-hoc command is as follows:
+```
+ansible -i path-to-inventory-file -m module -a args user@IP
+```
 ## Inventory File
 
-To get started with Ansible, first, we need to create an inventory file. An inventory is a single file with a list of hosts and groups.
+To get started with Ansible, first, we need to create an inventory file. An inventory is a single file with a list of hosts and groups. It is generally structured in INI or YAML format.
 
-The default location for this file is `/etc/ansible/hosts`. We can use it, but, for convenience, we can also specify a different inventory file at the command line using the `-i <path>` option.
+The default inventory file is `/etc/ansible/hosts`. We can use it, but, for convenience, we can also specify a different inventory file at the command line using the `-i <path>` option.
 
 e.g., 
 - First we create an inventory file in current working dir: `touch inventory`
 
-- we specify hosts in it
+- we specify hosts in it (in `user@a.b.c.d` form), as we need to specify the user for logging in.
 
   ```bash
-  #inventory
-    w.x.y.z
-    a.b.c.d
+  # inventory file: inventory.ini (INI format)
+  steve@w.x.y.z
+  harry@a.b.c.d
   ```
 
-- now, we execute an ad-hoc command: ` ansible -i ./inventory all -m 'shell' -a 'touch testFile.txt' `. *A yellowish output indicates successful execution of an Ansible command.*
+- now, we execute an ad-hoc command: ` ansible -i ./inventory.ini all -m 'shell' -a 'touch testFile.txt' `. *A yellowish output indicates successful execution of an Ansible command.*
 
   - **all** is a pattern specifying all the hosts in **inventory** , i.e. the command will execute for all of the hosts. For details, check [patterns](https://docs.ansible.com/ansible/latest/inventory_guide/intro_patterns.html#intro-patterns).
 
-  - Instead of **all**, we can also specify a single host, like: ` ansible -i ./inventory w.x.y.z -m 'shell' -a 'touch testFile.txt' `. But the host must reside in **inventory** .
+  - Instead of **all**, we can also specify a single host, like: ` ansible -i ./inventory.ini user@w.x.y.z -m 'shell' -a 'touch testFile.txt' `. But the host must reside in **inventory** .
 
-- **-m** flag is used to specify module (As we use shell command, we use 'shell' ). For details, check [all modules](https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html) .
+- **-m** flag is used to specify module (As we use shell command, we use 'shell'). This module is responsible for execution of any assigned task. For details, check [all modules](https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html) .
 
 - **-a** flag is used to specify the argument/command.
 
@@ -48,7 +52,7 @@ To perform actions on a particular set of hosts, we create groups in inventory f
 
 e.g., here we have two hosts under **dbservers** group and one host under **webservers** group.
 ```bash
-  # inventory
+  # inventory file: inventory.ini (INI format)
   
   [dbservers]
   a.b.c.d
@@ -60,19 +64,20 @@ e.g., here we have two hosts under **dbservers** group and one host under **webs
 
 Now, we can run a command for all the hosts under a particular group (here, **webservers**),
 
-`ansible -i ./inventory webservers -m 'shell' -a 'touch hello.html'`
+`ansible -i ./inventory.ini webservers -m 'shell' -a 'touch hello.html'`
 
 ## Write Playbook
-Playbooks are used to perform multiple tasks. In the following playbook, we install nginx and start nginx.
+A playbook consists of one or more ‘plays’ in an ordered list. Each play executes part of the overall goal of the playbook, running one or more tasks. In the following playbook, we install nginx and start nginx.
 
 - First, we need to create an yaml file, say *playbook.yml* . 
 
 
   ```yaml
-  ---
-  - name: Install and Start Nginx  #we can give any name to the playbook
+  ---  # This indicates the start of a playbook
 
-    hosts: all  # execute the playbook for all hosts in inventory
+  - name: Install and Start Nginx  # we can give any name to the play
+
+    hosts: all  # execute the play for all hosts in inventory
 
     become: true # for using root privileges
 
@@ -88,16 +93,16 @@ Playbooks are used to perform multiple tasks. In the following playbook, we inst
         name: nginx  # we are interested about nginx service
         state: started  # to start the service
 
-  # we can write multiple playbooks in single file as shown
+  # we can write multiple plays in single file as shown
 
-  - name: Second playbook
-    
+  - name: Second play
+    [...]
 
   ```
 
 - Now, we execute this playbook in the main server using **ansible-playbook** command:
 
-  `ansible-playbook -i ./inventory playbook.yml`
+  `ansible-playbook -i ./inventory.ini playbook.yml`
 
 - Check the status of nginx by `systemctl status nginx`
 
