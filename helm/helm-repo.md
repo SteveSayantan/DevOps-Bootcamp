@@ -103,16 +103,14 @@
 
 - Create a folder `my-helm-repo`
   ```bash
-  my-helm-repo/
-  my-foo-app/
-  my-bar-app/
+  mkdir my-helm-repo/
   ```
-- Package `my-foo-app`
+- Package `my-foo-app` and place it under `my-helm-repo`.
   ```bash
   helm package my-foo-app/ -d my-helm-repo/
   ```
 
-- Package `my-bar-app`
+- Package `my-bar-app` and place it under `my-helm-repo`.
   ```bash
   helm package my-bar-app/ -d my-helm-repo/
   ```
@@ -137,15 +135,20 @@
   ```bash
   helm push ./my-helm-repo/my-bar-app-1.0.0.tgz oci://registry.hub.docker.com/username
   ```
-  Now, we can use the chart as follows:
+  Now, we can use the chart as follows. If the `--version` flag is omitted, the latest version is used.
   ```bash
-  helm install bar oci://registry-1.docker.io/username/my-bar-app
+  helm install bar oci://registry-1.docker.io/username/my-bar-app --version 1.0.0
   ```
   In future, if we push another version of this chart (say, `my-bar-app-1.0.1.tgz` ), we would use
   ```bash
   helm push ./my-helm-repo/my-bar-app-1.0.1.tgz oci://registry.hub.docker.com/username
   ```
   It will be stored into **my-bar-app** repository with a new tag (e.g., `1.0.1`).
+
+- Similarly, the following command will push the `my-foo-app` chart to Docker Hub and place it inside `my-foo-app` repository with the tag `1.0.0`.
+  ```bash
+  helm push ./my-helm-repo/my-foo-app-1.0.0.tgz oci://registry.hub.docker.com/username
+  ```
 
 ### Using GitHub
 In this approach, we create a GitHub repo that will be used as a Chart repository to host multiple packaged charts.
@@ -191,7 +194,7 @@ In this approach, we create a GitHub repo that will be used as a Chart repositor
 
   It is important as Helm expects a public web server (like GitHub Pages) that serves our packaged charts and index.yaml file at plain HTTPS URLs.
 
-- Now, we can use those using the GitHub Pages URL:
+- Now, we can use these charts using the GitHub Pages URL:
   ```bash
   helm repo add myrepo https://yourusername.github.io/helm-repo/
   helm search repo myrepo --versions
@@ -227,7 +230,15 @@ In this approach, we create a GitHub repo that will be used as a Chart repositor
   helm package my-bar-app/ -d my-helm-repo/
   ```
 
-- contents
+- List the contents of `my-helm-repo`
+
+  ```bash
+  controlplane:~$ ls -l my-helm-repo/
+  total 8
+  -rw-r--r-- 1 root root 869 Oct  8 10:55 my-bar-app-1.0.1.tgz
+  -rw-r--r-- 1 root root 848 Oct  8 09:55 my-bar-app-1.0.0.tgz
+  -rw-r--r-- 1 root root 849 Oct  8 09:53 my-foo-app-1.0.0.tgz
+  ```
 
 - Now, create the `index.yaml` again to include the new version.
   ```bash
@@ -241,17 +252,15 @@ In this approach, we create a GitHub repo that will be used as a Chart repositor
   entries:
     my-bar-app:
     - apiVersion: v2
-      appVersion: latest
-      created: "2025-10-08T20:22:01.356219+05:30"
-      description: A Helm chart for installing http-echo web-server that echos back
-        a message
-      digest: 73d126757ce7b474b3798d706cae85291fa6ea8c237eacbb121ef971e4a9b6aa
-      name: my-bar-app
-      type: application
+      [...]
       urls:
       - https://stevesayantan.github.io/helm-repo/my-bar-app-1.0.1.tgz
       version: 1.0.1
-    [...]
+    - apiVersion: v2
+      [...]
+      version: 1.0.0
+    my-foo-app:
+      [...]
   ```
 - Commit and push the changes.
 

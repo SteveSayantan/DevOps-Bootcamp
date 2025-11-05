@@ -12,7 +12,7 @@ Key problems included:
 
 * **General Maintenance:** Performing maintenance tasks and ensuring that servers had the necessary resources, such as CPU and memory, and were available all the time.
 
-When sysadmins attempted to automate tasks by writing scripts, they also faced challenges because their infrastructure was highly heterogeneous.
+**When sysadmins attempted to automate tasks by writing scripts**, they also faced challenges because their infrastructure was highly heterogeneous.
 
 * **Incompatibility Across Platforms:** Organizations had servers of different types, including physical and virtual machines running various operating systems.
 
