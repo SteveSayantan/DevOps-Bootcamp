@@ -93,3 +93,11 @@ Besides configuration management, Ansible can be used for the following major pu
 - Ansible uses SSH and WinRM protocol to connect to Linux and Windows instances respectively.
 
 - Ansible does not care about the cloud provider. If Ansible can SSH/WinRM into an instance (i.e. perform passwordless authentication ) from our system, it can do its job.
+
+- Control Node (Linux) requires Python. Ansible cannot run on Windows as the control node due to API limitations on the platform. However, we can run Ansible on Windows using the Windows Subsystem for Linux (WSL) or in a container.
+
+- Managed Nodes (Linux) require Python.
+
+- Managed Nodes (Windows) require WinRM (for connection) & PowerShell (for code execution). 
+  - The majority of the core Ansible modules are written for a combination of Unix-like machines and other generic services. As these modules are written in Python and use APIs not present on Windows they will not work. 
+  - There are dedicated Windows modules that are written in PowerShell and are meant to be run on Windows hosts. For details check out the [docs](https://docs.ansible.com/ansible/latest/os_guide/intro_windows.html#managing-windows-hosts-with-ansible)

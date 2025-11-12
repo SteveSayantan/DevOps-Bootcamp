@@ -17,9 +17,11 @@ A script written in Bash is called Bash Script. A script written in Python is ca
 If we need to run some basic commands say, `ls` or `echo hello world`, we don't create a bash file for it. Similarly, for simple tasks, we need not write Ansible Playbooks, we can directly run Ansible CLI commands. Such commands are called [ad-hoc commands](https://docs.ansible.com/ansible/latest/command_guide/intro_adhoc.html) .
 
 Default syntax to write ad-hoc command is as follows:
+```bash
+ansible -i path-to-inventory-file host_pattern -m module -a args 
 ```
-ansible -i path-to-inventory-file -m module -a args user@IP
-```
+The targeted **host** must reside in the provided inventory file.
+
 ## Inventory File
 
 To get started with Ansible, first, we need to create an inventory file. An inventory is a single file with a list of hosts and groups. It is generally structured in INI or YAML format.
@@ -29,23 +31,48 @@ The default inventory file is `/etc/ansible/hosts`. We can use it, but, for conv
 e.g., 
 - First we create an inventory file in current working dir: `touch inventory`
 
-- we specify hosts in it (in `user@a.b.c.d` form), as we need to specify the user for logging in.
+- we specify hosts in it, as we need to specify the user for logging in.
+- `ansible_host` — tells Ansible which network address to connect to for that host (IP or FQDN).
+- `ansible_user` — tells Ansible which remote user to use when establishing the connection. By default, Ansible tries to connect with the username we are using on the control node.
 
   ```bash
   # inventory file: inventory.ini (INI format)
-  steve@w.x.y.z
-  harry@a.b.c.d
+
+  # explicit syntax
+  ansible_host=10.38.23.212 ansible_user=ubuntu
+  ansible_host=10.38.24.215 ansible_user=harry
+  
+  # or, using shorthand syntax (not recommended for real usage)
+  ubuntu@10.38.23.212
+  harry@10.38.24.215
   ```
 
-- now, we execute an ad-hoc command: ` ansible -i ./inventory.ini all -m 'shell' -a 'touch testFile.txt' `. *A yellowish output indicates successful execution of an Ansible command.*
+- now, we execute an ad-hoc command: ` ansible -i ./inventory.ini all -m 'shell' -a 'touch testFile.txt' `.
 
   - **all** is a pattern specifying all the hosts in **inventory** , i.e. the command will execute for all of the hosts. For details, check [patterns](https://docs.ansible.com/ansible/latest/inventory_guide/intro_patterns.html#intro-patterns).
 
-  - Instead of **all**, we can also specify a single host, like: ` ansible -i ./inventory.ini user@w.x.y.z -m 'shell' -a 'touch testFile.txt' `. But the host must reside in **inventory** .
+  - Instead of **all**, we can also specify a single host, like: ` ansible -i ./inventory.ini w.x.y.z -m 'shell' -a 'touch testFile.txt' `. But the host must reside in **inventory** .
 
-- **-m** flag is used to specify module (As we use shell command, we use 'shell'). This module is responsible for execution of any assigned task. For details, check [all modules](https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html) .
+- **-m** flag is used to specify module (As we use shell command, we use 'shell'). This module is responsible for execution of any assigned task. To listing all the modules use `ansible-doc -l`. The default module for the ansible command-line utility is the `command` module. For details, check [all modules](https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html).
 
 - **-a** flag is used to specify the argument/command.
+
+Learn more about connection variables (e.g. `ansible_host`, `ansible_user`) from the  [docs](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters)
+
+### Small Diagnostics
+
+- See what Ansible will connect to and with what vars for a specific host. Use `--list` flag (with no args) instead to get info about all hosts:
+  ```bash
+  ansible-inventory -i inventory --host web1
+  ```
+- Confirm connection and the user (quick "whoami" test):
+  ```bash
+  ansible web1 -i inventory -m command -a "whoami"
+  ```
+- Show gathered facts and verify connectivity (useful to confirm SSH):
+  ```bash
+  ansible web1 -i inventory -m setup
+  ```
 
 ## Grouping hosts in Inventory
 To perform actions on a particular set of hosts, we create groups in inventory file.
@@ -65,6 +92,8 @@ e.g., here we have two hosts under **dbservers** group and one host under **webs
 Now, we can run a command for all the hosts under a particular group (here, **webservers**),
 
 `ansible -i ./inventory.ini webservers -m 'shell' -a 'touch hello.html'`
+
+Learn about [Grouping groups](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#grouping-groups-parent-child-group-relationships)
 
 ## Write Playbook
 A playbook consists of one or more ‘plays’ in an ordered list. Each play executes part of the overall goal of the playbook, running one or more tasks. In the following playbook, we install nginx and start nginx.
@@ -104,36 +133,41 @@ A playbook consists of one or more ‘plays’ in an ordered list. Each play exe
 
   `ansible-playbook -i ./inventory.ini playbook.yml`
 
+In the managed node,
 - Check the status of nginx by `systemctl status nginx`
 
 - Stop nginx by `sudo systemctl stop nginx`.
 
-## Ansible Roles
-It is an efficient way to write complex playbooks. 
+### Privilege Escalation
 
-Let's assume we want to configure Kubernetes using Ansible. If we wish to do that in a single playbook, it will contain 50 to 60 tasks, a lot of variables, certificates, secrets etc. But if we use Ansible Roles, we can easily segregate different logic and maintain a proper structure.
+```yaml
+become: yes
+```
+is shorthand for:
 
-To create a role for Kubernetes:
-`ansible-galaxy role init kubernetes`
+```yaml
+become: yes
+become_user: root  # Who to become (default is root)
+become_method: sudo # How to become (sudo, su, pbrun, doas, etc.)
+become_flags: "" # Extra options passed to the become_method command; none by default 
+```
+If we write
+```yaml
+become: yes
+become_method: su
+```
+the final effective settings are:
+```yaml
+become: yes
 
-The above command will create a directory in cwd named **kubernetes** . Following are the contents of that dir:
+become_method: su # ← we overrode this
 
-```bash
-ubuntu@ip-172-31-91-41:~/ansible$ ls -l kubernetes/
-total 36
--rw-rw-r-- 1 ubuntu ubuntu 1328 Aug  2 12:13 README.md
-drwxrwxr-x 2 ubuntu ubuntu 4096 Aug  2 12:13 defaults
-drwxrwxr-x 2 ubuntu ubuntu 4096 Aug  2 12:13 files
-drwxrwxr-x 2 ubuntu ubuntu 4096 Aug  2 12:13 handlers
-drwxrwxr-x 2 ubuntu ubuntu 4096 Aug  2 12:13 meta
-drwxrwxr-x 2 ubuntu ubuntu 4096 Aug  2 12:13 tasks
-drwxrwxr-x 2 ubuntu ubuntu 4096 Aug  2 12:13 templates
-drwxrwxr-x 2 ubuntu ubuntu 4096 Aug  2 12:13 tests
-drwxrwxr-x 2 ubuntu ubuntu 4096 Aug  2 12:13 vars
+become_user: root # ← still default (not reset)
 
+become_flags: "" # ← still default
 ```
 
-
+Learn more about it [here](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become)
 
 
 
