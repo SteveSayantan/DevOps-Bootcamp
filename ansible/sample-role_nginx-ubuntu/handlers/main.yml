@@ -1,0 +1,14 @@
+---
+# handlers file for sample-role_nginx-ubuntu
+
+- name: reload nginx
+  ansible.builtin.service:
+    name: "{{ nginx_service_name }}"
+    state: reloaded
+  listen: "reload nginx"
+
+- name: restart nginx
+  ansible.builtin.service:
+    name: "{{ nginx_service_name }}"
+    state: restarted
+  listen: "restart nginx"

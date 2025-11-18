@@ -1,0 +1,12 @@
+---
+# defaults file for sample-role_nginx-ubuntu - safe, overrideable defaults
+nginx_package: nginx
+nginx_service_name: nginx
+nginx_listen_port: 80
+nginx_server_name: "_"  # default catch-all
+nginx_root: /var/www/html
+nginx_site_template: nginx.conf.j2
+nginx_index_file: index.html
+nginx_enable_gzip: true
+# small optimisation toggles
+nginx_use_ufw_rule: false

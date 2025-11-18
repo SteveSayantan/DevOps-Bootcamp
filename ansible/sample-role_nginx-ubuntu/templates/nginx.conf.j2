@@ -1,0 +1,36 @@
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+
+events { worker_connections 768; }
+
+http {
+  sendfile on;
+  tcp_nopush on;
+  tcp_nodelay on;
+  keepalive_timeout 65;
+  types_hash_max_size 2048;
+
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+
+  {% if nginx_enable_gzip %}
+  gzip on;
+  gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+  {% endif %}
+
+  server {
+    listen {{ nginx_listen_port }} default_server;
+    listen [::]:{{ nginx_listen_port }} default_server;
+
+    server_name {{ nginx_server_name }};
+
+    root {{ nginx_root }};
+    index index.html index.htm;
+
+    location / {
+      try_files $uri $uri/ =404;
+    }
+  }
+}

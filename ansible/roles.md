@@ -145,3 +145,66 @@ Here's the sample playbook to be converted:
    ```bash
    ansible-playbook -i path_to_inventory playbook.yaml
    ```
+## How does Ansible find roles
+
+Ansible finds roles by searching specific **role paths**, in this order:
+
+1. `roles/` directory next to our playbook
+
+1. A `roles_path` configured in `ansible.cfg`.
+
+   For example:
+   ```ini
+   [defaults]
+   roles_path = ./custom_roles:/another/location
+   ```
+1. The `/etc/ansible/roles` global directory.
+
+1. When we install a role from Ansible-Galaxy, it lands in:
+   ```
+   ~/.ansible/roles/
+   ```
+1. Roles inside a collection (`<collection>/roles`)
+
+
+### 🎁 Bonus: What if the role folder name and role name don’t match?
+
+This fails:
+
+```
+roles/
+  nodejs-role/    <-- folder name
+```
+
+```yaml
+roles:
+  - nodejs
+```
+
+Why?
+
+Ansible expects:
+
+```
+roles/nodejs/
+```
+
+The directory name *must* match the role name in playbook.
+
+Unless we use:
+
+```yaml
+roles:
+  - role: nodejs-role
+```
+## References
+- Understand [Tags](https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_tags.html#tags)
+
+- Understand [Handlers](https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_handlers.html#)
+
+- Understand [Dependencies](https://docs.ansible.com/projects/ansible/latest/galaxy/user_guide.html#dependencies)
+
+- Understand [Connection Plugins](https://docs.ansible.com/projects/ansible/latest/plugins/connection.html#connection-plugins)
+
+- Understand [Running Aganist Localhost](https://docs.ansible.com/projects/ansible/latest/inventory_guide/connection_details.html#running-against-localhost)
+
