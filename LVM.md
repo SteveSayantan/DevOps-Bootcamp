@@ -24,7 +24,7 @@ For detailed explanation and step-by-step guide on LVM, check out this [LearnLin
 Handling storage devices in Linux, [LearnLinuxTv Tutorial](https://youtu.be/2Z6ouBYfZr8?si=YnQ49di7oQ72aQLv)
 
 ## Setting Up LVM in EC2
-First, we create an EC2 instane. Then, we attach two volumes each of size 2GB to our ec2 instance.
+First, we create an EC2 instance. Then, we attach two volumes each of size 2GB to it.
 
 ### Step 1️⃣: Check Available Disks
 Before setting up LVM, list available storage devices using `lsblk`

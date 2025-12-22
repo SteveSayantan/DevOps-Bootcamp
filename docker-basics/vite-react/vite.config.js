@@ -7,7 +7,7 @@ export default defineConfig({
 
   // to enable HMR when this dir is mounted on a container
   server:{
-    host:true,  // important !! without it, the dev server only listens to localhost IP
+    host:true,  // important !! without it, the dev server only listens to localhost IP. For more info, visit https://vite.dev/config/server-options#server-host
     port:3000
   }
 })

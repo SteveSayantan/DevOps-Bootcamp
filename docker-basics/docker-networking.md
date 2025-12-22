@@ -44,3 +44,12 @@ By default, Compose sets up a separate network for our app. Each container for a
 Our app's network is given a name based on the project name.
 
 Go through the [networking documentation](https://docs.docker.com/engine/network/) and [compose networking](https://docs.docker.com/compose/networking/) for more details.
+
+**Real Scenario**  
+Suppose, we have two docker containers (frontend and backend), both of which are a part of the same compose file. So, they are in the same network as well. Now, if our frontend app inside the container tries to access the backend api via the name of the container (e.g., `http://backend:5000`), it fails.
+
+**Solution**  
+The important thing for this setup is that our actual front-end code is not running in Docker, it's running in our browser. Even if we have a container serving its code, it's actually being executed on the host system and not in Docker. That means it has no idea about Docker networking, containers, or anything else; The browser is the entity making the `fetch()` call, and the browser itself isn't running in a container. That means the browser while trying to resolve the `backend` host name, fails.
+
+Since we're running this all on the same system, the "easy" way around this is to separately publish a port (say, 8002) for the `backend` service. Now, we can use `fetch('http://localhost:8002/')` to access the backend. Refer to [this](https://stackoverflow.com/a/77060234) for more info.
+

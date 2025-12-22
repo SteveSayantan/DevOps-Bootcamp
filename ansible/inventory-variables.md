@@ -107,3 +107,5 @@ The host and group variable files are loaded by searching paths relative to the 
 - Understand [Variable Precedence](https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable)
 
 - Understand [Precedence Rules](https://docs.ansible.com/projects/ansible/latest/reference_appendices/general_precedence.html#controlling-how-ansible-behaves-precedence-rules)
+
+- Understand [Blocks](https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_blocks.html#blocks)
