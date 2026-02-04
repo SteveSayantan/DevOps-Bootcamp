@@ -14,7 +14,7 @@ Overall, IAM is an essential component of AWS security, providing granular contr
 
 ## Components of IAM 
 
-- Users: IAM users represent individual people or entities (such as applications or services) that interact with our AWS resources. Each user has a unique name and security credentials (password or access keys) used for authentication and access control.
+- Users: IAM users represent individual people or entities (such as applications or services) that interact with our AWS resources. Each user has a unique name and security credentials (password or access keys) used for authentication and access control. E.g., We create `developer1` with login credentials so they can log in to the AWS Console and start/stop EC2 instances.
 
 - Groups: IAM groups are collections of users with similar access requirements. Instead of managing permissions for each user individually, we can assign permissions to groups, making it easier to manage access control. Users can be added or removed from groups as needed.
 

@@ -63,7 +63,7 @@ Kubernetes uses these values in two ways:
       limits.cpu: "4"  # Total CPU limits ≤ 4
       limits.memory: 2Gi # Total Memory limits ≤ 2Gi
    ```
-    Now, in a Pod Spec we can specify as follows:
+    Now, in a Pod Spec we can specify as follows. Note: **It isn't necessary to create ResourceQuota object beforehand to specify request and limits as shown below.**
    ```yaml
    apiVersion: v1
    kind: Pod

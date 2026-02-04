@@ -53,7 +53,7 @@ For more info, checkout the following:
 
 ## Creating Actions Secrets and Variables at Repository Level
 - Go to `Settings`(Repository) > `Secrets and variables` > `Actions`.
-- In the `Secrets` tab, click on `New repository secret` to create secrets to be used by actions defined in this repo. We can access these using the `secrets` context.  
+- In the `Secrets` tab, click on `New repository secret` to create secrets to be used by actions defined in this repo. We can access these using the `secrets` context. For more info, refer to [this](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets) 
 
 - In the `Variables` tab, click on `New repository variable` to create secrets to be used by actions defined in this repo. We can access these using the `vars` context.
 

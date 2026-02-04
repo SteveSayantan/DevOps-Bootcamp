@@ -84,6 +84,9 @@ E.g., The Bitnami repository is a popular public repository that contains thousa
 1. `helm get manifest release-name`: prints out all of the Kubernetes resources that were uploaded to the server. Each file begins with `---` to indicate the start of a YAML document, and then is followed by an automatically generated comment line that tells us what template file generated this YAML document.
 
 ### Reference
-- [HELM Docs](https://helm.sh/docs/)
-- [Working with](https://helm.sh/docs/topics/registries/)
+- [Important Topics](https://helm.sh/docs/topics/)
+- [HELM Chart Template Guide](https://helm.sh/docs/chart_template_guide/)
+- [Working with OCI-based registry](https://helm.sh/docs/topics/registries/)
 - [Chart repo Guide](https://helm.sh/docs/topics/chart_repository/)
+- [Flow Control](https://helm.sh/docs/chart_template_guide/control_structures)
+- [The 'required' function](https://helm.sh/docs/howto/charts_tips_and_tricks/#using-the-required-function)

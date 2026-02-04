@@ -96,7 +96,9 @@ Now, we can run a command for all the hosts under a particular group (here, **we
 Learn about [Grouping groups](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#grouping-groups-parent-child-group-relationships)
 
 ## Write Playbook
-A playbook consists of one or more ‘plays’ in an ordered list. Each play executes part of the overall goal of the playbook, running one or more tasks. In the following playbook, we install nginx and start nginx.
+A playbook consists of one or more ‘plays’ in an ordered list. Each play executes part of the overall goal of the playbook, running one or more tasks. A playbook runs in order from top to bottom. Within each play, tasks also run in order from top to bottom.
+
+In the following playbook, we install nginx and start nginx.
 
 - First, we need to create an yaml file, say *playbook.yml* . 
 

@@ -59,9 +59,9 @@ jobs:
 
 
 ### Variables
-Variables provide a way to store and reuse non-sensitive configuration information. You can store any configuration data such as compiler flags, usernames, or server names as variables. 
+Variables provide a way to store and reuse non-sensitive configuration information. We can store any configuration data such as compiler flags, usernames, or server names as variables. 
 
-You can set your own custom variables or use the default environment variables that GitHub sets automatically. For more information, see [this](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#default-environment-variables).
+We can set our own custom variables or use the default environment variables that GitHub sets automatically. For more information, see [this](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#default-environment-variables).
 
 To set a custom environment variable for a single workflow, you can define it using the `env` key. The scope of a custom variable set by this method is limited to the element in which it is defined.
 Variables can be scoped for:
