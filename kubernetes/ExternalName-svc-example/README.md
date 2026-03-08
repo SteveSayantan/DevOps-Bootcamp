@@ -21,7 +21,7 @@ Here, we are trying to connect to a postgres database in a namespace from a pyth
    docker build --no-cache --platform=linux/amd64 -t ttl.sh/demo-img:1h .
    docker push ttl.sh/demo-img:1h 
    ```
-   **ttl.sh** is a open-source docker image repository. Know more about  [here](https://ttl.sh/)
+   **ttl.sh** is a open-source docker image repository. Know more about [here](https://ttl.sh/)
 
 1. Create the application pod: (Make sure the `spec.containers.image` is on a par with the image name)
    ```bash

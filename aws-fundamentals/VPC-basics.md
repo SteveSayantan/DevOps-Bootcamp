@@ -27,6 +27,9 @@ It is decided by **Routing**.
 
 If a subnet has a route to an Internet Gateway, it’s **public**. If it doesn’t, it’s **private**.
 
+**Important:**
+A public IP on a resource does NOT automatically mean internet connectivity. A resource (e.g. an ec2) can always have a public IP irrespective of the subnet type (public/private). To allow connections from the internet to that resource, there must be a route in the corresponding subnet's route table that points to an Internet Gateway. Otherwise, inbound traffic can't access it.
+
 ## Key Components of VPC
 
 * **Subnets:** A subnet is a smaller slice of our VPC. These are divisions of the VPC’s IP address range assigned to specific applications or sub-projects.
@@ -63,6 +66,8 @@ If a subnet has a route to an Internet Gateway, it’s **public**. If it doesn�
   VPC-CIDR → local
   ```
   This route allows any subnet to talk to any other subnet, unless blocked by Security Group or NACL.
+
+- AWS knows which subnet the EC2 belongs to because the public IP is mapped to the EC2’s Elastic Network Interface (ENI), and the ENI is already attached to a specific subnet. AWS maintains a map to find the ENI from a public IP. AWS does not infer the subnet from the route table. 
 
 ### Scenario 1: Internet Gateway NAT (1:1 NAT) in practice
 
@@ -232,5 +237,5 @@ No routing to private subnets occurs. Ever.
   * Cannot be exposed even by accident
 
 ## References
-Know more about [How Amazon VPC works](https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html)
-
+- Know more about [How Amazon VPC works](https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html)
+- [VPC with servers in private subnet](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-example-private-subnets-nat.html)

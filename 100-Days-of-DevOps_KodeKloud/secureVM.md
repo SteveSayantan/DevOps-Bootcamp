@@ -21,7 +21,7 @@
 
 - Disable password login in the server
 
-  - Open `sudo nano /etc/ssh/sshd_config` in vim or nano.
+  - Open `/etc/ssh/sshd_config` in vim or nano (with sudo).
   - Search for **PasswordAuthentication** and change it to *no*. Optionally, we can also change the **PermitRootLogin** to *no* to prevent root user from logging in.
   - restart the ssh service using `sudo systemctl restart ssh`
 

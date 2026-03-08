@@ -25,7 +25,7 @@ StatefulSet is useful for apps that need **stable storage, predictable networkin
 
 3. **Stable Network Identity (DNS)**
 
-   * Each Pod gets a **stable DNS entry**:
+   * Each Pod gets a **stable DNS entry** with a **headless service** :
 
      ```
      <pod-name>.<service-name>.<namespace>.svc.cluster.local
@@ -43,42 +43,7 @@ StatefulSet is useful for apps that need **stable storage, predictable networkin
 
 > The important factors (e.g. replication, backup, disaster-recovery) are generally handled by different operators e.g. CloudNativePG, kubeDB etc.
 
-## 🔹 The Problem
-
-When we deploy a `Deployment` in Kubernetes, Pods are **ephemeral** and their names and IPs change if they are rescheduled.
-
-* For stateless apps → that’s fine, because we just need load-balancing.
-* For stateful apps (like DBs, Kafka, Zookeeper) → each Pod must have a **stable identity** because:
-
-  * Replication relies on knowing “who is primary, who is replica.”
-  * Sharded systems depend on consistent addressing (Pod 0 always stores shard 0).
-
-So we need:
-
-1. **Stable network identity** → DNS names that don’t change.
-2. **Direct Pod-to-Pod communication** (not load-balanced).
-
-### What does a Headless Service do?
-
-Normally, a `Service` in Kubernetes gives us:
-
-* A **cluster IP** (single entry point).
-* Load balancing across Pods.
-
-But with **StatefulSets**, we don’t want load balancing — each Pod must be addressable directly.
-
-👉 That’s where **Headless Services** (`spec.clusterIP: None`) come in:
-
-* They don’t allocate a cluster IP.
-* Instead, DNS records are created for **each Pod** individually.
-* Each Pod gets a **stable DNS name** of the form:
-
-  ```
-  <pod-name>.<service-name>.<namespace>.svc.cluster.local
-  ```
-This is what lets DB clusters, Zookeeper, Kafka brokers, etc. discover each other reliably.
-
-Example:
+**Example:**
 
 ```yaml
 apiVersion: apps/v1
@@ -86,7 +51,7 @@ kind: StatefulSet
 metadata:
   name: mysql
 spec:
-  serviceName: "mysql"   # 👈 Must match the headless service
+  serviceName: "mysql"   # 👈 Must match an existing headless service name
   replicas: 3
   selector:
     matchLabels:

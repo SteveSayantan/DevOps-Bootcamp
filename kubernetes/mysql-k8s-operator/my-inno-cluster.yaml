@@ -1,0 +1,35 @@
+apiVersion: mysql.oracle.com/v2
+kind: InnoDBCluster
+metadata:
+  name: mycluster
+  namespace: inno-cluster
+spec:
+  secretName: mypwds
+  tlsUseSelfSigned: true
+  instances: 3
+  podSpec:
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:   # hard requirement
+
+        # In each domain (i.e. a node in this case), if there exists a pod with label `component=mysqld`, don't schedule a new pod
+
+        - labelSelector:
+            matchExpressions:
+            - key: component
+              operator: In
+              values:
+              - 'mysqld'
+          topologyKey: kubernetes.io/hostname
+
+  datadirVolumeClaimTemplate:
+    accessModes: 
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+    storageClassName: local-path
+  service:
+    type: NodePort  # Optional; To expose the service running within minikube (as per minikube docs)
+  router:
+    instances: 1

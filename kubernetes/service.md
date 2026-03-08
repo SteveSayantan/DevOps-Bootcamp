@@ -12,11 +12,7 @@ In Kubernetes, applications are typically run using Deployments, which in turn c
 
 - When a Pod restarts and gets a new IP, any connection attempting to reach the old IP would fail, making the application unreachable even though a new Pod might be perfectly healthy. This creates a situation where, from a user's perspective, the application appears "not reachable" or "not working," even though it is technically running in the cluster
 
-
-
-✅ **Service solves both problems** by:
-
-The Service API, part of Kubernetes, is an abstraction to help us expose groups of Pods over a network.
+✅ **Service solves both problems** as the Service API, part of Kubernetes, is an abstraction to help us expose groups of Pods over a network.
 
 * Giving a **stable IP** and **DNS name** to a set of Pods. Instead of clients directly accessing individual Pod IPs, they interact with the Service's stable IP address or name
 
@@ -49,15 +45,13 @@ spec:
 * `port: 80` → What clients use to access the service.
 * `targetPort: 8080` → Where the actual Pods are listening.
 
----
-
 ## ⚙️ Modes of Services in Kubernetes
 
-| Mode                      | Purpose                                                                          |
-| ------------------------- | -------------------------------------------------------------------------------- |
-| **ClusterIP** *(default)* | Accessible **only within the cluster**, on a cluster-internal IP.                |
-| **NodePort**              | Exposes service on a **static port on each Node**.                               |
-| **LoadBalancer**          | Provisions an **external IP** via a cloud provider.                              |
+| Mode| Purpose|
+| -------- | ---- |
+| **ClusterIP** *(default)* | Accessible **only within the cluster**, on a cluster-internal IP.|
+| **NodePort**| Exposes service on a **static port on each Node**.|
+| **LoadBalancer**| Provisions an **external IP** via a cloud provider.|
 
 
 ### ClusterIP
@@ -222,9 +216,60 @@ Kubernetes:
 | **9. Ingress Controller Friendly**     | Can be used behind an **Ingress controller** (like NGINX or Traefik) to expose many services through **a single external IP**.                                      |
 
 ### External Name
-- Used to communicate with service hosted outside the k8s cluster
+- Used to communicate with service hosted outside the K8s cluster.
+- Also used to communicate with service in other NS. It abstracts the IP details, Service name etc. of the Service we want to communicate with, knowing only its DNS name is sufficient.
 - It uses only DNS names, no IP is used.
-- Also used to communicate with service in other NS. It abstracts the IP details, Service name etc. of the Service we want to communicate with, only the DNS name is sufficient.
 
 ### Headless Service
-It's clusterIP service with `clusterIP:None`. used with stateful set. It does not get a clusterIP.
+It's clusterIP service with `clusterIP:None`. It is used with stateful set. It does not get a clusterIP.
+
+When we deploy a `Deployment` in Kubernetes, Pods are **ephemeral** and their names and IPs change if they are rescheduled.
+
+* For stateless apps → that’s fine, because we just need load-balancing.
+* For stateful apps (like DBs, Kafka, Zookeeper) → each Pod must have a **stable identity** because:
+
+  * Replication relies on knowing “who is primary, who is replica.”
+  * Sharded systems depend on consistent addressing (Pod 0 always stores shard 0).
+
+So we need:
+
+1. **Stable network identity** → DNS names that don’t change.
+2. **Direct Pod-to-Pod communication** (not load-balanced).
+
+#### What does a Headless Service do?
+
+Normally, a `Service` in Kubernetes gives us:
+
+* A **cluster IP** (single entry point).
+* Load balancing across Pods.
+
+But with **StatefulSets**, we don’t want load balancing — each Pod must be addressable directly.
+
+👉 That’s where **Headless Services** (`spec.clusterIP: None`) come in:
+
+* They don’t allocate a cluster IP.
+* Instead, DNS records are created for **each Pod** individually.
+* Each Pod gets a **stable DNS name** of the form:
+
+  ```
+  <pod-name>.<service-name>.<namespace>.svc.cluster.local
+  ```
+This is what lets DB clusters, Zookeeper, Kafka brokers, etc. discover each other reliably.
+
+**Example**
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: headless-svc
+spec:
+  clusterIP: None
+  selector:
+    app: myapp
+  ports:
+    - port: 80          # Port exposed by the headless service
+      targetPort: 8080 
+```
+
+## References
+- [Service in K8s](https://kubernetes.io/docs/concepts/services-networking/service/)

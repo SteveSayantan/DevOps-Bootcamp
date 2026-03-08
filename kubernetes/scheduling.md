@@ -172,6 +172,8 @@ Here's an example that demonstrates [scheduling a pod using both required and pr
 
 Read about [Node affinity Weight](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity-weight)
 
+Learn about [Pod Affinity and Anti-affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity)
+
 ## Priority Class
 Priority indicates the importance of a Pod relative to other Pods. If a Pod cannot be scheduled due to lack of resources (CPU, memory, etc.), the scheduler tries to preempt (evict) lower priority Pods to make scheduling of the pending Pod possible.
 
@@ -262,4 +264,4 @@ Read about kube-scheduler, filtering (based on Predicates e.g. required NodeAffi
 
 Read about Scheduler Performance Tuning [here](https://kubernetes.io/docs/concepts/scheduling-eviction/scheduler-perf-tuning/)
 
-Read aboug Pod Overhead [here](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-overhead/)
+Read about Pod Overhead [here](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-overhead/)

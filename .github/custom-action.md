@@ -106,3 +106,6 @@ jobs:
         run: |
           echo "Hello from after composite action"
 ```
+## References
+- [About Custom Actions](https://docs.github.com/en/actions/concepts/workflows-and-actions/custom-actions)
+- [Manage Custom Actions](https://docs.github.com/en/actions/how-tos/create-and-publish-actions/manage-custom-actions)

@@ -32,10 +32,19 @@ In *host2*,
   ssh-ed23uoirut...
   ```
 
-Now, in *host1*, we can simply run `ssh <user_name>@<host2_IP>` to connect to *host2* .
+Now, in *host1*, we can simply run `ssh user@host2` to connect to *host2* .
 ```bash
 ssh ubuntu@13.218.232.238
 ```
-To disconnect, use **logout** command.
+To disconnect, use **logout** command or press `ctrl+D`.
+
+### Bonus
+To make this entire process easy, use `ssh-copy-id` command to copy the public key of **host1** to **host2**.
+
+E.g., from **host1** we can simply run,
+```
+ssh-copy-id -i path_to_public_key user@host2
+```
+This will add the specified public key to the **authorized_keys** in *host2*.
 
 >A documentation on how to use SSH public key authentication on Linux, click [here](https://www.linode.com/docs/guides/use-public-key-authentication-with-ssh/?tabs=ed25519-recommended%2Cssh-add%2Cusing-ssh-copy-id-recommended)

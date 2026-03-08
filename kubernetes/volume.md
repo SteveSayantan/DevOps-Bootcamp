@@ -359,4 +359,7 @@ A StorageClass involves several critical fields:
 | `volumeBindingMode`    | Controls when the PV is bound to PVC: `Immediate` or `WaitForFirstConsumer`. Read about it [here](https://kubernetes.io/docs/concepts/storage/storage-classes/#volume-binding-mode).  |
 | `allowedTopologies`    | Restricts which zones or nodes the PV can be provisioned in. |
 
+## References
+Learn about [lifecycle of a Volume and Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#lifecycle-of-a-volume-and-claim)
+
 
