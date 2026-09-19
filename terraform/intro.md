@@ -1,5 +1,5 @@
 ## Infrastructure as Code
-Infrastructure as Code (IaC) is the practice of defining and managing infrastructure (networks, servers, storage, IAM, load balancers, etc.) using code - not using the user interface.
+Infrastructure as Code (IaC) is the practice of defining and managing infrastructure (networks, servers, storage, IAM, load balancers, etc.) using code - not using the user interface. It enables repeatability, version control, and automation.
 
 Before the advent of IaC, infrastructure management was typically a manual and time-consuming process. System administrators had to:
 
@@ -33,10 +33,14 @@ Terraform simplifies the life of a DevOps engineer by providing a universal appr
 - Terraform has a large and active user community, which means we can find answers to common questions, troubleshooting tips, and a wealth of documentation and tutorials online. Also, there are pre-built modules and configurations for a wide range of services and infrastructure components, saving us time and effort in writing custom configurations.
 
 ## Important Terminologies
-- Provider: A provider is a plugin for Terraform that defines and manages resources for a specific cloud or infrastructure platform. Examples of providers include AWS, Azure, Google Cloud, and many others. We configure providers in our Terraform code to interact with the desired infrastructure platform.
+- Provider: A provider is a plugin for Terraform that defines and manages resources for a specific cloud or infrastructure platform. Providers are downloaded during `terraform init`. Examples of providers include AWS, Azure, Google Cloud, and many others. We configure providers in our Terraform code to interact with the desired infrastructure platform.
 
 - Configuration File: Terraform uses a set of configuration files (often with a `.tf` extension) written in HCL that Terraform loads together as one configuration. These files specify providers, the desired infrastructure state, variables, exported outputs etc. The primary configuration file is usually named `main.tf`, but we can use multiple configuration files as well. Terraform loads all `.tf` files in a directory (same module) and merges them. File names are for humans/organization, not execution order.
 
 - Resource: A resource is a specific infrastructure component that we want to create and manage using Terraform. Resources can include virtual machines, databases, storage buckets, network components, and more. Each resource has a type and configuration parameters that we define in our Terraform code.
 
 - State File: Terraform maintains a state file (often named `terraform.tfstate`) that keeps track of the current state of our infrastructure. This file is crucial for Terraform to understand what resources have been created and what changes need to be made during updates. Basically, Terraform uses state to map our code ↔ real AWS resources.
+
+## References
+- [Version Constraint Syntax](https://developer.hashicorp.com/terraform/language/expressions/version-constraints#version-constraint-syntax)
+- [Authentication for AWS](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#authentication-and-configuration)

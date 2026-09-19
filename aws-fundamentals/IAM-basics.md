@@ -20,6 +20,32 @@ Overall, IAM is an essential component of AWS security, providing granular contr
 
 - Roles: IAM roles are used to grant temporary access to AWS resources. It doesn’t have permanent credentials. Instead, it issues temporary security tokens through AWS STS (Security Token Service). E.g., We launch an EC2 instance that needs to access S3. Instead of putting access keys in code (bad idea), we attach an IAM Role to the instance. The role gives temporary credentials to the instance, allowing it to read/write S3.
 
+  There are two different permission relationships involved with IAM roles.
+
+  - Trust policy that answers **Who can assume this role?**
+    Example:
+    ```json
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+    ```
+  - Permissions policy that answers **What can the role do after it is assumed?**  
+    Example:
+    ```json
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Resource": "arn:aws:s3:::my-bucket/*"
+    }
+    ```
+    This distinction applies to both normal roles and service-linked roles.
+
 - Policies: IAM policies are JSON documents that define permissions. Policies specify the actions that can be performed on AWS resources and the resources to which the actions apply. Policies can be attached to users, groups, or roles to control access. IAM provides both AWS managed policies (predefined policies maintained by AWS) and customer managed policies (policies created and managed by us).
 
 ## User Creation
@@ -41,6 +67,193 @@ AWS managed policies are prebuilt and maintained by AWS to make it easy to grant
 In contrast, customer managed policies are used when an organization/user needs to define very specific, tailored permissions that are not covered by the default offerings. It offers fine-grained control, stability and follows the principle of least privilege.
 
 >  AWS Managed → convenience, less control ; Customer Managed → control, more effort
+
+## Policy Evaluation
+
+![Policy Evaluation](../assets/AWS-Policy-Evaluation.png)
+
+## Service-Linked Roles
+A service-linked role is a special IAM role that is directly associated with a specific AWS service. It provides the service with the permissions it needs to perform actions in the customer's AWS account. Unlike a normal IAM role, AWS manages much of its creation, trust relationship, permissions, and lifecycle. The role is intended specifically for that AWS service.
+
+Imagine we create an AWS service that needs to manage other AWS resources. For example, Auto Scaling might need to:
+
+- interact with EC2
+- create or terminate instances
+- interact with Elastic Load Balancing
+- publish metrics
+
+AWS needs an identity with permissions to perform those operations.
+
+Historically, we might have had to manually create a role and configure its trust relationship. That becomes annoying very quickly. So AWS introduced service-linked roles.
+
+AWS creates the appropriate role with the appropriate trust relationship and permissions. We don't have to design the role from scratch.
+
+**Difference b/w normal IAM role and Service-Linked role**  
+A normal IAM role is a general-purpose identity that we create and configure, whereas a service-linked role is specifically tied to one AWS service and is primarily managed by AWS for that service's operations.
+
+> Suppose we enable a service that requires one. We don't necessarily have to manually create the Service-Linked role, the service can create it for us.
+
+| Normal IAM Role                         | Service-Linked Role                        |
+| --------------------------------------- | ------------------------------------------ |
+| General-purpose identity                | Dedicated to one AWS service               |
+| We create/manage it                    | AWS service creates/manages it             |
+| Can be used by various trusted entities | Can be assumed by its linked AWS service   |
+| We generally control its trust policy  | Trust relationship is controlled by AWS    |
+| Permissions can be customized           | Permissions are defined by AWS             |
+| We decide how to use it                | AWS service uses it for its own operations |
+
+## Importance of `sts:AssumeRole`
+Suppose, Alice wants to assume **DeveloperRole** so that she perform some activity. Alice isn't directly using her own permissions for those operations. She obtains temporary credentials associated with **DeveloperRole**.
+
+The API operation responsible for this is `sts:AssumeRole`
+
+For AssumeRole, there are two sides.
+
+- **Alice's permissions**  
+  Alice needs permission to call:
+  ```
+  {
+    "Effect": "Allow",
+    "Action": "sts:AssumeRole",
+    "Resource": "arn:aws:iam::123456789012:role/DeveloperRole"
+  }
+  ```
+  This says, Alice is allowed to attempt to assume DeveloperRole. But that alone isn't sufficient.
+
+- **The role's trust policy**
+
+  DeveloperRole must trust Alice's principal. For example:
+  ```
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "arn:aws:iam::123456789012:user/Alice"
+        },
+        "Action": "sts:AssumeRole"
+      }
+    ]
+  }
+  ```
+So we have:
+```
+Alice's identity policy
+        |
+        | "I can call AssumeRole on DeveloperRole"
+        ↓
+DeveloperRole
+        |
+        | Trust policy:
+        | "I trust Alice"
+        ↓
+Assumption succeeds
+```
+Both sides matter.
+
+Effectively, to assume an IAM role, the calling principal generally needs permission to perform **sts:AssumeRole** on the target role, and the target role's trust policy must trust the calling principal.
+
+## Importance of `iam:AssumeRole`
+Suppose Alice wants to launch an EC2 instance.
+
+The EC2 instance needs permissions to access S3 via **s3:GetObject**
+
+So a role **EC2-S3-Role** is created with
+
+```json
+{
+  "Effect": "Allow",
+  "Action": "s3:GetObject",
+  "Resource": "arn:aws:s3:::my-bucket/*"
+}
+```
+The role's trust policy says:
+
+```json
+{
+  "Effect": "Allow",
+  "Principal": {
+    "Service": "ec2.amazonaws.com"
+  },
+  "Action": "sts:AssumeRole"
+}
+```
+
+Now when Alice launches EC2, she herself isn't assuming `EC2-S3-Role`. **EC2 is going to use it.**
+
+That is where **iam:PassRole** comes in. 
+
+Suppose Alice has:
+
+```json
+{
+  "Effect": "Allow",
+  "Action": "iam:PassRole",
+  "Resource": "arn:aws:iam::123456789012:role/EC2-S3-Role"
+}
+```
+
+This means:
+
+> Alice is allowed to tell an AWS service to use this IAM role.
+
+But Alice does **not** receive the permissions of `EC2-S3-Role`.
+
+That's the crucial distinction.
+
+> The role must trust the service that is going to use it.
+
+### One Catch
+
+Suppose we grant:
+
+```json
+{
+  "Effect": "Allow",
+  "Action": "iam:PassRole",
+  "Resource": "*"
+}
+```
+
+Combined with the ability to create resources that can use roles, this can be extremely powerful.
+
+For example:
+
+```text
+iam:PassRole *
+        +
+ec2:RunInstances
+```
+
+could potentially allow a user to launch an EC2 instance with a highly privileged role. So least privilege matters enormously here.
+
+We should always prefer:
+
+```json
+{
+  "Effect": "Allow",
+  "Action": "iam:PassRole",
+  "Resource": "arn:aws:iam::123456789012:role/ApplicationEC2Role"
+}
+```
+
+instead of:
+
+```json
+"Resource": "*"
+```
+
+##  `AssumeRole` vs `PassRole`
+|                               | `sts:AssumeRole`              | `iam:PassRole`                       |
+| ----------------------------- | ----------------------------- | ------------------------------------ |
+| Purpose                       | Obtain credentials for a role | Give a service a role to use         |
+| Who ultimately uses role?     | Calling principal             | AWS service                          |
+| Temporary credentials?        | Yes                           | Not directly                         |
+| API                           | STS `AssumeRole`              | IAM authorization check              |
+| Example                       | Developer becomes AdminRole   | Developer launches EC2 using AppRole |
+| Trust policy involved?        | Yes                           | The service must trust the role      |
+| Caller gets role permissions? | Yes, through temporary creds  | No                                   |
 
 ## References
 - [IAM JSON policy element reference](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html)

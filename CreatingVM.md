@@ -33,7 +33,7 @@ If we have to create only one instance, we may use this approach:
 - Under Key pair, click on Create new key pair.
 
 - Provide a name . Keep the Key pair type and Private key file format default (i.e. RSA and .pem respectively) . Click on Create key pair.
-  - The downloaded .pem file should be stored in a secured location always.
+  - The downloaded .pem file (private key) should be stored in a secured location always.
 
 - Under Network Settings make sure ,
 
