@@ -1,0 +1,26 @@
+vpc_name="terraform-vpc"
+vpc_cidr="10.23.0.0/22"
+subnet_config=[
+    {
+        name="private-a",
+        cidr_block="10.23.3.0/26",
+        availability_zone="us-east-1a"
+    },
+    {
+        name="private-b",
+        cidr_block="10.23.3.64/26",
+        availability_zone="us-east-1b"
+    },
+    {
+        name="public-a",
+        cidr_block="10.23.3.128/27",
+        is_public=true,
+        availability_zone="us-east-1a"
+    },
+    {
+        name="public-b",
+        cidr_block="10.23.3.160/27",
+        is_public=true,
+        availability_zone="us-east-1b"
+    }
+]

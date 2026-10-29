@@ -1,5 +1,5 @@
 ### WHY
-When our container needs to store some data in it, the data persists till the container is running. If the container is restarted or removed, all the data is destroyed. So, it is a very common requirement to persist the data in a Docker container beyond the lifetime of the container.
+When our container needs to store some data in it, the data persists till the container is running. If the container is removed, all the data is destroyed. So, it is a very common requirement to persist the data in a Docker container beyond the lifetime of the container.
 
 Volumes are persistent data stores for containers, created and managed by Docker.
 
@@ -48,7 +48,7 @@ Check the syntactical differences, [here](https://docs.docker.com/engine/storage
 
 **If we start a container which creates a new volume, and the container has files or directories to be mounted, Docker copies the directory's contents into the volume.**
 
-
+### Cleaning Up
 ```
 docker container stop devtest
 

@@ -20,12 +20,12 @@ An object key (or key name) is the unique identifier for an object within a buck
 ## How data is stored
 When we upload an object:
 - S3 automatically replicates it across multiple Availability Zones
-- You configure nothing
+- We configure nothing
 
 **Important Facts**
-- S3 buckets are created in a region
-- Data stays in that region unless we replicate it
-- The namespace is global, not the data
+- S3 buckets are created in a region.
+- Data stays in that region unless we replicate it.
+- The namespace is global, but the data stays in a particular region. However, the data is accessible globally.
 
 > Durability: 11 nines (99.999999999%)
 
@@ -68,11 +68,11 @@ For example, we can move infrequently accessed data to a lower-cost storage clas
 
 ## Advanced S3 Bucket Features
 
-- S3 Event Notifications and Triggers
+- **S3 Event Notifications and Triggers**
 
   S3 event notifications allow you to configure actions when specific events occur in an S3 bucket. For example, you can trigger AWS Lambda functions, send messages to Amazon Simple Queue Service (SQS), or invoke other services using Amazon SNS when an object is created or deleted.
 
-- S3 Batch Operations
+- **S3 Batch Operations**
 
   S3 Batch Operations allow you to perform large-scale batch operations on objects, such as copying, tagging, or deleting, across multiple buckets. It simplifies managing large datasets and automates tasks that would otherwise be time-consuming.
 

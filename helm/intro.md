@@ -10,11 +10,11 @@ Helm addresses several challenges faced by DevOps and Site Reliability Engineeri
 
 *   **Simplifies Installation and Management:** Without Helm, installing applications like Prometheus or Argo CD on Kubernetes involves creating and applying multiple YAML files (e.g., for namespaces, service accounts, config maps, deployments, stateful sets) in a specific order. This process can be complex and time-consuming. Helm streamlines this by allowing installation with a single `helm install` command, similar to how `apt install` works on Linux.
 
+*   **Facilitates Customisation for Different Environments:** Organisations often require different configurations for applications in various environments (e.g., UAT, Production). For instance, a development environment might need two replicas of an application, while production might require three. Without Helm, this would mean maintaining multiple, slightly different YAML files or complex scripting. Helm's `values.yaml` allows for **customising application specifications** (like replica counts or image versions) easily for different environments without altering the core template.
+
 *   **Reduces Maintenance Overhead:** Managing numerous scripts for installing, upgrading, and uninstalling many different applications across potentially hundreds of servers or Kubernetes clusters becomes a significant maintenance burden. Scripts can become outdated as installation mechanisms change, requiring constant review and testing. Helm eliminates this by standardising these operations through charts.
 
 *   **Handles Dependencies:** Just like `apt` manages dependencies for Linux packages, Helm charts can encapsulate and manage the dependencies required for a Kubernetes application, ensuring everything is installed correctly.
-
-*   **Facilitates Customisation for Different Environments:** Organisations often require different configurations for applications in various environments (e.g., UAT, Production). For instance, a development environment might need two replicas of an application, while production might require three. Without Helm, this would mean maintaining multiple, slightly different YAML files or complex scripting. Helm's `values.yaml` allows for **customising application specifications** (like replica counts or image versions) easily for different environments without altering the core template.
 
 *   **Enables Application Packaging and Sharing:** Helm allows organisations to package their own microservices as charts, which can then be hosted in a central repository. This makes it easy for other teams within the organisation, or even external users, to deploy these applications using simple Helm commands.
 

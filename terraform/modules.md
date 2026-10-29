@@ -22,5 +22,7 @@ The advantage of using Terraform modules in our infrastructure as code (IaC) pro
 
 1. **Scalability**: As our infrastructure grows, modules provide a scalable approach to managing complexity. We can continue to create new modules for different components of our architecture, maintaining a clean and organized codebase.
 
+> When building reusable Terraform modules (modules shared across different projects or teams), we should only specify the minimum provider version required (using `>=`), rather than setting a maximum limit like the `~>` operator does. We should specify a minimum version, document any known incompatibilities, and let the root module manage the maximum version.
+
 ## References
 - [Terraform Module](https://developer.hashicorp.com/terraform/language/modules)

@@ -68,6 +68,8 @@ In contrast, customer managed policies are used when an organization/user needs 
 
 >  AWS Managed → convenience, less control ; Customer Managed → control, more effort
 
+Learn about Managed Policies and Inline Policies [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html)
+
 ## Policy Evaluation
 
 ![Policy Evaluation](../assets/AWS-Policy-Evaluation.png)
@@ -111,7 +113,7 @@ For AssumeRole, there are two sides.
 
 - **Alice's permissions**  
   Alice needs permission to call:
-  ```
+  ```json
   {
     "Effect": "Allow",
     "Action": "sts:AssumeRole",
@@ -123,7 +125,7 @@ For AssumeRole, there are two sides.
 - **The role's trust policy**
 
   DeveloperRole must trust Alice's principal. For example:
-  ```
+  ```json
   {
     "Version": "2012-10-17",
     "Statement": [
@@ -182,7 +184,7 @@ The role's trust policy says:
 
 Now when Alice launches EC2, she herself isn't assuming `EC2-S3-Role`. **EC2 is going to use it.**
 
-That is where **iam:PassRole** comes in. 
+That is where **iam:PassRole** comes in. It allows a principal to delegate a role to an AWS service so that the service can operate using that role.
 
 Suppose Alice has:
 
